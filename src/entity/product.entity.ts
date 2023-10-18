@@ -9,6 +9,9 @@ export class Product {
     @Column({nullable: false})
     name: string
 
+    @Column({nullable: false})
+    normalized: string
+
     @Column("simple-array")
     images: string[]
 

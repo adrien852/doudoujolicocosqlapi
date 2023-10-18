@@ -24,6 +24,10 @@ var Product = /** @class */ (function () {
         __metadata("design:type", String)
     ], Product.prototype, "name", void 0);
     __decorate([
+        (0, typeorm_1.Column)({ nullable: false }),
+        __metadata("design:type", String)
+    ], Product.prototype, "normalized", void 0);
+    __decorate([
         (0, typeorm_1.Column)("simple-array"),
         __metadata("design:type", Array)
     ], Product.prototype, "images", void 0);

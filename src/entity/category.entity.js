@@ -26,6 +26,10 @@ var Category = /** @class */ (function () {
     __decorate([
         (0, typeorm_1.Column)({ nullable: false }),
         __metadata("design:type", String)
+    ], Category.prototype, "normalized", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({ nullable: false }),
+        __metadata("design:type", String)
     ], Category.prototype, "image", void 0);
     __decorate([
         (0, typeorm_1.OneToMany)(function () { return product_entity_1.Product; }, function (product) { return product.category; }),

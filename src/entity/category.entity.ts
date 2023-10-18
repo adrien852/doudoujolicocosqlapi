@@ -10,6 +10,9 @@ export class Category {
     name: string
 
     @Column({nullable: false})
+    normalized: string
+
+    @Column({nullable: false})
     image: string
 
     @OneToMany(() => Product, (product) => product.category)
