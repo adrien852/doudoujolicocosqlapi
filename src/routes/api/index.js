@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var app_data_source_1 = require("../../app-data-source");
 var productController = require('../../controllers/product');
-// const categoryController = require('../../controllers/category');
+var categoryController = require('../../controllers/category');
 // const paymentController = require('../../controllers/payment');
 // const customerController = require('../../controllers/customer');
 // establish database connection
@@ -17,8 +17,9 @@ app_data_source_1.myDataSource
 });
 var router = express.Router();
 router.get("/products", productController.all);
-router.get("/products/:name", productController.byNormalized);
-// router.get("/products/:category", productController.byCategory)
+router.get("/products/:normalized", productController.byNormalized);
+router.get("/categories/:category", productController.byCategory);
+router.get("/categories", categoryController.all);
 // router.post("/products", async function (req: Request, res: Response) {
 //     const product = await myDataSource.getRepository(Product).create(req.body)
 //     const results = await myDataSource.getRepository(Product).save(product)

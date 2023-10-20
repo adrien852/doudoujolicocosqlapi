@@ -40,7 +40,9 @@ var Product = /** @class */ (function () {
         __metadata("design:type", String)
     ], Product.prototype, "description", void 0);
     __decorate([
-        (0, typeorm_1.ManyToOne)(function () { return category_entity_1.Category; }, function (category) { return category.products; }),
+        (0, typeorm_1.ManyToOne)(function () { return category_entity_1.Category; }, function (category) { return category.products; }, {
+            eager: true,
+        }),
         __metadata("design:type", category_entity_1.Category)
     ], Product.prototype, "category", void 0);
     Product = __decorate([

@@ -37,64 +37,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_data_source_1 = require("../app-data-source");
-var product_entity_1 = require("../entity/product.entity");
-var productController = {
+var category_entity_1 = require("../entity/category.entity");
+var categoryController = {
     all: function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var products;
+            var categories;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         res.header("Access-Control-Allow-Origin", "*");
-                        return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(product_entity_1.Product).find({})];
+                        return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(category_entity_1.Category).find()];
                     case 1:
-                        products = _a.sent();
-                        res.send(products);
+                        categories = _a.sent();
+                        res.send(categories);
                         return [2 /*return*/];
-                }
-            });
-        });
-    },
-    byNormalized: function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            var products;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        res.header("Access-Control-Allow-Origin", "*");
-                        return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(product_entity_1.Product).findOne({
-                                where: {
-                                    normalized: req.params.normalized,
-                                }
-                            })];
-                    case 1:
-                        products = _a.sent();
-                        res.send(products);
-                        return [2 /*return*/];
-                }
-            });
-        });
-    },
-    byCategory: function (req, res) {
-        return __awaiter(this, void 0, void 0, function () {
-            var results;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        res.header("Access-Control-Allow-Origin", "*");
-                        return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(product_entity_1.Product).find({
-                                where: {
-                                    category: {
-                                        normalized: req.params.category
-                                    }
-                                }
-                            })];
-                    case 1:
-                        results = _a.sent();
-                        return [2 /*return*/, res.send(results)];
                 }
             });
         });
     }
 };
-module.exports = productController;
+module.exports = categoryController;

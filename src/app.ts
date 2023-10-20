@@ -8,5 +8,5 @@ const api = require('./routes/api/index');
 app.use('/v1', api);
 
 app.listen(8080, function () {
-    console.log('Server has started on port 3000');
+    console.log('Server has started on port 8080');
   });
