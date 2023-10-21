@@ -22,12 +22,20 @@ var Customer = /** @class */ (function () {
         __metadata("design:type", Number)
     ], Customer.prototype, "id", void 0);
     __decorate([
-        (0, typeorm_1.OneToOne)(function () { return address_entity_1.Address; }),
+        (0, typeorm_1.Column)({ nullable: false }),
+        __metadata("design:type", String)
+    ], Customer.prototype, "email", void 0);
+    __decorate([
+        (0, typeorm_1.OneToOne)(function () { return address_entity_1.Address; }, {
+            cascade: true,
+        }),
         (0, typeorm_1.JoinColumn)(),
         __metadata("design:type", address_entity_1.Address)
     ], Customer.prototype, "shippingAddress", void 0);
     __decorate([
-        (0, typeorm_1.OneToOne)(function () { return address_entity_1.Address; }),
+        (0, typeorm_1.OneToOne)(function () { return address_entity_1.Address; }, {
+            cascade: true,
+        }),
         (0, typeorm_1.JoinColumn)(),
         __metadata("design:type", address_entity_1.Address)
     ], Customer.prototype, "billingAddress", void 0);

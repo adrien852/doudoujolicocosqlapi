@@ -44,9 +44,7 @@ var categoryController = {
             var categories;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        res.header("Access-Control-Allow-Origin", "*");
-                        return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(category_entity_1.Category).find()];
+                    case 0: return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(category_entity_1.Category).find()];
                     case 1:
                         categories = _a.sent();
                         res.send(categories);

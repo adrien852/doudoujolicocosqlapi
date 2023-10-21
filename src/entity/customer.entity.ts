@@ -8,11 +8,18 @@ export class Customer {
     @PrimaryGeneratedColumn()
     id: number
 
-    @OneToOne(() => Address)
+    @Column({nullable: false})
+    email: string
+
+    @OneToOne(() => Address, {
+        cascade: true,
+    })
     @JoinColumn()
     shippingAddress: Address
 
-    @OneToOne(() => Address)
+    @OneToOne(() => Address, {
+        cascade: true,
+    })
     @JoinColumn()
     billingAddress: Address
 

@@ -6,7 +6,7 @@ import { Product } from "../../entity/product.entity"
 const productController = require('../../controllers/product');
 const categoryController = require('../../controllers/category');
 // const paymentController = require('../../controllers/payment');
-// const customerController = require('../../controllers/customer');
+const customerController = require('../../controllers/customer');
 
 // establish database connection
 myDataSource
@@ -27,6 +27,8 @@ router.get("/products/:normalized", productController.byNormalized)
 router.get("/categories/:category", productController.byCategory)
 
 router.get("/categories", categoryController.all)
+
+router.post("/customers", customerController.save)
 
 // router.post("/products", async function (req: Request, res: Response) {
 //     const product = await myDataSource.getRepository(Product).create(req.body)

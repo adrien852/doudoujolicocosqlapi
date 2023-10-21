@@ -33,23 +33,19 @@ var Address = /** @class */ (function () {
     __decorate([
         (0, typeorm_1.Column)({ nullable: false }),
         __metadata("design:type", String)
-    ], Address.prototype, "email", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ nullable: false }),
-        __metadata("design:type", String)
-    ], Address.prototype, "phone", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ nullable: false }),
-        __metadata("design:type", String)
     ], Address.prototype, "postalCode", void 0);
     __decorate([
         (0, typeorm_1.Column)({ nullable: false }),
         __metadata("design:type", String)
     ], Address.prototype, "address1", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ nullable: false }),
+        (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], Address.prototype, "address2", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({ nullable: false }),
+        __metadata("design:type", String)
+    ], Address.prototype, "phone", void 0);
     Address = __decorate([
         (0, typeorm_1.Entity)()
     ], Address);

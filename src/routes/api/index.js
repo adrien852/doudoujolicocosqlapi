@@ -5,7 +5,7 @@ var app_data_source_1 = require("../../app-data-source");
 var productController = require('../../controllers/product');
 var categoryController = require('../../controllers/category');
 // const paymentController = require('../../controllers/payment');
-// const customerController = require('../../controllers/customer');
+var customerController = require('../../controllers/customer');
 // establish database connection
 app_data_source_1.myDataSource
     .initialize()
@@ -20,6 +20,7 @@ router.get("/products", productController.all);
 router.get("/products/:normalized", productController.byNormalized);
 router.get("/categories/:category", productController.byCategory);
 router.get("/categories", categoryController.all);
+router.post("/customers", customerController.save);
 // router.post("/products", async function (req: Request, res: Response) {
 //     const product = await myDataSource.getRepository(Product).create(req.body)
 //     const results = await myDataSource.getRepository(Product).save(product)

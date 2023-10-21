@@ -44,9 +44,7 @@ var productController = {
             var products;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        res.header("Access-Control-Allow-Origin", "*");
-                        return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(product_entity_1.Product).find({})];
+                    case 0: return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(product_entity_1.Product).find({})];
                     case 1:
                         products = _a.sent();
                         res.send(products);
@@ -60,13 +58,11 @@ var productController = {
             var products;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        res.header("Access-Control-Allow-Origin", "*");
-                        return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(product_entity_1.Product).findOne({
-                                where: {
-                                    normalized: req.params.normalized,
-                                }
-                            })];
+                    case 0: return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(product_entity_1.Product).findOne({
+                            where: {
+                                normalized: req.params.normalized,
+                            }
+                        })];
                     case 1:
                         products = _a.sent();
                         res.send(products);
@@ -80,15 +76,13 @@ var productController = {
             var results;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        res.header("Access-Control-Allow-Origin", "*");
-                        return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(product_entity_1.Product).find({
-                                where: {
-                                    category: {
-                                        normalized: req.params.category
-                                    }
+                    case 0: return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(product_entity_1.Product).find({
+                            where: {
+                                category: {
+                                    normalized: req.params.category
                                 }
-                            })];
+                            }
+                        })];
                     case 1:
                         results = _a.sent();
                         return [2 /*return*/, res.send(results)];

@@ -15,17 +15,14 @@ export class Address {
     city: string
 
     @Column({nullable: false})
-    email: string
-
-    @Column({nullable: false})
-    phone: string
-
-    @Column({nullable: false})
     postalCode: string
 
     @Column({nullable: false})
     address1: string
 
-    @Column({nullable: false})
+    @Column({nullable: true})
     address2: string
+
+    @Column({nullable: false})
+    phone: string
 }

@@ -4,6 +4,16 @@ var express = require("express");
 // create and setup express app
 var app = express();
 app.use(express.json());
+var cors = require("cors");
+require('dotenv').config();
+var clientHost = process.env.CLIENT_HOST;
+var corsConf = {
+    origin: clientHost,
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    optionsSuccessStatus: 204
+};
+app.use(cors(corsConf));
 var api = require('./routes/api/index');
 app.use('/v1', api);
 app.listen(8080, function () {
