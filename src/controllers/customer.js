@@ -103,18 +103,6 @@ var customerController = {
                 }
             });
         });
-    },
-    //   async savePaymentId(req, res){
-    //     const payment = req.body.payload;
-    //     const customerId = req.params.customerId;
-    //     Customer.updateOne({_id: customerId}, {payment: payment}, function (err, response) {
-    //       if(err){
-    //         res.status(500).send(err);
-    //       }
-    //       else{
-    //         res.json(response)
-    //       }
-    //     })
-    //   }
+    }
 };
 module.exports = customerController;

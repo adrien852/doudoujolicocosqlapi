@@ -8,10 +8,7 @@ var cors = require("cors");
 require('dotenv').config();
 var clientHost = process.env.CLIENT_HOST;
 var corsConf = {
-    origin: clientHost,
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-    optionsSuccessStatus: 204
+    origin: clientHost
 };
 app.use(cors(corsConf));
 var api = require('./routes/api/index');

@@ -24,8 +24,8 @@ var Payment = /** @class */ (function () {
         __metadata("design:type", String)
     ], Payment.prototype, "paymentId", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ nullable: false }),
-        __metadata("design:type", String)
+        (0, typeorm_1.Column)('decimal', { precision: 6, scale: 2, nullable: false }),
+        __metadata("design:type", Number)
     ], Payment.prototype, "amount", void 0);
     __decorate([
         (0, typeorm_1.Column)({ type: "datetime", nullable: false }),

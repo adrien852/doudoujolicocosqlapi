@@ -6,7 +6,7 @@ export const myDataSource = new DataSource({
     port: 3306,
     username: "root",
     password: "",
-    database: "main",
+    database: "doudoujoli",
     entities: ["src/entity/*.js"],
     logging: true,
     synchronize: true,

@@ -4,7 +4,7 @@ var express = require("express");
 var app_data_source_1 = require("../../app-data-source");
 var productController = require('../../controllers/product');
 var categoryController = require('../../controllers/category');
-// const paymentController = require('../../controllers/payment');
+var paymentController = require('../../controllers/payment');
 var customerController = require('../../controllers/customer');
 // establish database connection
 app_data_source_1.myDataSource
@@ -21,6 +21,9 @@ router.get("/products/:normalized", productController.byNormalized);
 router.get("/categories/:category", productController.byCategory);
 router.get("/categories", categoryController.all);
 router.post("/customers", customerController.save);
+router.post('/payment/save', paymentController.savePaymentId);
+router.get('/payment/initialize', paymentController.initialize);
+router.post('/payment/checkout', paymentController.checkout);
 // router.post("/products", async function (req: Request, res: Response) {
 //     const product = await myDataSource.getRepository(Product).create(req.body)
 //     const results = await myDataSource.getRepository(Product).save(product)

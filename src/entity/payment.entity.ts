@@ -1,5 +1,4 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm"
-import { Category } from "./category.entity"
 import { Customer } from "./customer.entity"
 
 @Entity()
@@ -10,8 +9,8 @@ export class Payment {
     @Column({nullable: false})
     paymentId: string
 
-    @Column({nullable: false})
-    amount: string
+    @Column('decimal', { precision: 6, scale: 2 , nullable: false})
+    amount: number
 
     @Column({type: "datetime", nullable: false})
     createdAt: string

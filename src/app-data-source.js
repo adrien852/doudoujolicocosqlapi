@@ -8,7 +8,7 @@ exports.myDataSource = new typeorm_1.DataSource({
     port: 3306,
     username: "root",
     password: "",
-    database: "main",
+    database: "doudoujoli",
     entities: ["src/entity/*.js"],
     logging: true,
     synchronize: true,

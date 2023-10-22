@@ -7,10 +7,7 @@ require('dotenv').config()
 const clientHost = process.env.CLIENT_HOST;
 
 const corsConf = {
-  origin: clientHost,
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  preflightContinue: false,
-  optionsSuccessStatus: 204
+  origin: clientHost
 }
 
 app.use(cors(corsConf));
