@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, CreateDateColumn } from "typeorm"
 import { Customer } from "./customer.entity"
 
 @Entity()
@@ -12,8 +12,8 @@ export class Payment {
     @Column('decimal', { precision: 6, scale: 2 , nullable: false})
     amount: number
 
-    @Column({type: "datetime", nullable: false})
-    createdAt: string
+    @CreateDateColumn()
+    createdAt: Date;
 
     @ManyToOne(() => Customer, (customer) => customer.payments)
     customer: Customer
