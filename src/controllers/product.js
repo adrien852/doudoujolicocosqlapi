@@ -55,7 +55,7 @@ var productController = {
     },
     byNormalized: function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var products;
+            var product;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(product_entity_1.Product).findOne({
@@ -64,8 +64,8 @@ var productController = {
                             }
                         })];
                     case 1:
-                        products = _a.sent();
-                        res.send(products);
+                        product = _a.sent();
+                        res.send(product);
                         return [2 /*return*/];
                 }
             });

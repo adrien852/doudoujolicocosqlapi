@@ -17,9 +17,10 @@ app_data_source_1.myDataSource
 });
 var router = express.Router();
 router.get("/products", productController.all);
+router.get("/products/categories/:category", productController.byCategory);
 router.get("/products/:normalized", productController.byNormalized);
-router.get("/categories/:category", productController.byCategory);
 router.get("/categories", categoryController.all);
+router.get("/categories/:normalized", categoryController.byNormalized);
 router.post("/customers", customerController.save);
 router.post('/payment/save', paymentController.savePaymentId);
 router.get('/payment/initialize', paymentController.initialize);

@@ -13,12 +13,12 @@ const productController = {
     
     async byNormalized(req: Request, res: Response) {
         
-        const products = await myDataSource.getRepository(Product).findOne({
+        const product = await myDataSource.getRepository(Product).findOne({
             where: {
                 normalized: req.params.normalized,
             }
         })
-        res.send(products)
+        res.send(product)
     },
 
     async byCategory(req: Request, res: Response) {

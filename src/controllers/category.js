@@ -52,6 +52,24 @@ var categoryController = {
                 }
             });
         });
-    }
+    },
+    byNormalized: function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var category;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(category_entity_1.Category).findOne({
+                            where: {
+                                normalized: req.params.normalized,
+                            }
+                        })];
+                    case 1:
+                        category = _a.sent();
+                        res.send(category);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    },
 };
 module.exports = categoryController;
