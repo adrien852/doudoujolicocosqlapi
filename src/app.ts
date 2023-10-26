@@ -16,6 +16,8 @@ const api = require('./routes/api/index');
 
 app.use('/v1', api);
 
+app.disable('etag');
+
 app.listen(8080, function () {
     console.log('Server has started on port 8080');
   });
