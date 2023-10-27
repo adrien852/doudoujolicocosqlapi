@@ -25,6 +25,7 @@ router.post("/customers", customerController.save);
 router.post('/payment/save', paymentController.savePaymentId);
 router.get('/payment/initialize', paymentController.initialize);
 router.post('/payment/checkout', paymentController.checkout);
+router.get('/payment/test', paymentController.test);
 // router.post("/products", async function (req: Request, res: Response) {
 //     const product = await myDataSource.getRepository(Product).create(req.body)
 //     const results = await myDataSource.getRepository(Product).save(product)

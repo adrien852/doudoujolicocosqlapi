@@ -5,13 +5,14 @@ import { Product } from "../entity/product.entity"
 import { Payment } from "../entity/payment.entity";
 import { Request, Response } from "express"
 const productController = require('./product');
-
+const nodemailer = require('nodemailer');
+var Mailgen = require('mailgen');
 
 const gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
-  merchantId: "2jw4v7rfxc3gmqf6",
-  publicKey: "2xrfbr3ddmc7mqzd",
-  privateKey: "f444444f850f2816b306a142548e6def"
+  merchantId: process.env.BRAINTREE_MERCHANT_ID,
+  publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+  privateKey: process.env.BRAINTREE_PRIVATE_KEY
 });
 
 const paymentController = {
@@ -48,17 +49,27 @@ const paymentController = {
     },
     async savePaymentId(req: Request, res: Response){
         const customer = Object.assign( myDataSource.getRepository(Customer).create({id: req.body.payload.customerId}));
-        // const customer = await myDataSource.getRepository(Customer).find({
-        //     where: {
-        //         id: parseInt(req.body.payload.customerId),
-        //     }
-        // })
         const payment = Object.assign( myDataSource.getRepository(Payment).create({
             customer: customer,
             ...req.body.payload
         }));
-        const results = await myDataSource.getRepository(Payment).save(payment);
-        return res.send(results)
+        myDataSource.getRepository(Payment).save(payment).then((results) => {
+            sendConfirmationEmail()
+            .then((response) => {
+                return res.status(201).json(
+                    {
+                        email: "Email sent",
+                        payment: results
+                    }
+                )
+            }).catch((err) => {
+                return res.status(500).json({ msg: err });
+            })
+        }).catch((err) => {
+            return res.status(500).json(err);
+        })
+        
+        
       }
 }
 
@@ -76,6 +87,50 @@ async function getTotalAmount(items){
 }
 
 module.exports = paymentController;
+
+const transporter = nodemailer.createTransport({
+    service: process.env.EMAIL_SERVICE,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+});
+
+async function sendConfirmationEmail(){
+    let MailGenerator = new Mailgen({
+        theme: 'default',
+        product: {
+            name: 'YOUR_PRODUCT_NAME',
+            link: 'https://mailgen.js/'
+        }
+    });
+
+    let response = {
+        body: {
+            name: 'Name',
+            intro: 'Welcome to ABC Company! We\'re very excited to have you on board.',
+            action: {
+                instructions: 'To get started with ABC, please click here:',
+                button: {
+                    color: '#22BC66', // Optional action button color
+                    text: 'Confirm your account',
+                    link: 'https://mailgen.js/'
+                }
+            }
+        }
+    };
+
+    let mail = MailGenerator.generate(response);
+
+    const mailData = {
+        from: 'durougeadrien@gmail.com',  // sender address
+        to: 'durougeadrien@gmail.com',   // list of receivers
+        subject: 'Sending Email using Node.js',
+        text: 'That was easy!',
+        html: mail,
+    }  
+    return transporter.sendMail(mailData);
+}
 
 // gateway.transaction.sale({
 //     amount: totalPrice,
