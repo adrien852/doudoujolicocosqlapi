@@ -53,13 +53,27 @@ var customer_entity_1 = require("../entity/customer.entity");
 var product_entity_1 = require("../entity/product.entity");
 var payment_entity_1 = require("../entity/payment.entity");
 var productController = require('./product');
+var nodemailer = require('nodemailer');
+var Mailgen = require('mailgen');
 var gateway = new braintree.BraintreeGateway({
     environment: braintree.Environment.Sandbox,
-    merchantId: "2jw4v7rfxc3gmqf6",
-    publicKey: "2xrfbr3ddmc7mqzd",
-    privateKey: "f444444f850f2816b306a142548e6def"
+    merchantId: process.env.BRAINTREE_MERCHANT_ID,
+    publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+    privateKey: process.env.BRAINTREE_PRIVATE_KEY
 });
 var paymentController = {
+    test: function (req, res) {
+        sendConfirmationEmail()
+            .then(function (response) {
+            return res.status(201).json({
+                msg: "Email sent",
+                info: response.messageId,
+                preview: nodemailer.getTestMessageUrl(response)
+            });
+        }).catch(function (err) {
+            return res.status(500).json({ msg: err });
+        });
+    },
     initialize: function (req, res) {
         gateway.clientToken.generate({}, function (err, response) {
             if (response) {
@@ -100,17 +114,24 @@ var paymentController = {
     },
     savePaymentId: function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var customer, payment, results;
+            var customer, payment;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        customer = Object.assign(app_data_source_1.myDataSource.getRepository(customer_entity_1.Customer).create({ id: req.body.payload.customerId }));
-                        payment = Object.assign(app_data_source_1.myDataSource.getRepository(payment_entity_1.Payment).create(__assign({ customer: customer }, req.body.payload)));
-                        return [4 /*yield*/, app_data_source_1.myDataSource.getRepository(payment_entity_1.Payment).save(payment)];
-                    case 1:
-                        results = _a.sent();
-                        return [2 /*return*/, res.send(results)];
-                }
+                customer = Object.assign(app_data_source_1.myDataSource.getRepository(customer_entity_1.Customer).create({ id: req.body.payload.customerId }));
+                payment = Object.assign(app_data_source_1.myDataSource.getRepository(payment_entity_1.Payment).create(__assign({ customer: customer }, req.body.payload)));
+                app_data_source_1.myDataSource.getRepository(payment_entity_1.Payment).save(payment).then(function (results) {
+                    sendConfirmationEmail()
+                        .then(function (response) {
+                        return res.status(201).json({
+                            email: "Email sent",
+                            payment: results
+                        });
+                    }).catch(function (err) {
+                        return res.status(500).json({ msg: err });
+                    });
+                }).catch(function (err) {
+                    return res.status(500).json(err);
+                });
+                return [2 /*return*/];
             });
         });
     }
@@ -145,6 +166,50 @@ function getTotalAmount(items) {
     });
 }
 module.exports = paymentController;
+var transporter = nodemailer.createTransport({
+    service: process.env.EMAIL_SERVICE,
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+    },
+});
+function sendConfirmationEmail() {
+    return __awaiter(this, void 0, void 0, function () {
+        var MailGenerator, response, mail, mailData;
+        return __generator(this, function (_a) {
+            MailGenerator = new Mailgen({
+                theme: 'default',
+                product: {
+                    name: 'YOUR_PRODUCT_NAME',
+                    link: 'https://mailgen.js/'
+                }
+            });
+            response = {
+                body: {
+                    name: 'Name',
+                    intro: 'Welcome to ABC Company! We\'re very excited to have you on board.',
+                    action: {
+                        instructions: 'To get started with ABC, please click here:',
+                        button: {
+                            color: '#22BC66',
+                            text: 'Confirm your account',
+                            link: 'https://mailgen.js/'
+                        }
+                    }
+                }
+            };
+            mail = MailGenerator.generate(response);
+            mailData = {
+                from: 'durougeadrien@gmail.com',
+                to: 'durougeadrien@gmail.com',
+                subject: 'Sending Email using Node.js',
+                text: 'That was easy!',
+                html: mail,
+            };
+            return [2 /*return*/, transporter.sendMail(mailData)];
+        });
+    });
+}
 // gateway.transaction.sale({
 //     amount: totalPrice,
 //     paymentMethodNonce: nonceFromTheClient,

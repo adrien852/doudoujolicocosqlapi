@@ -28,8 +28,8 @@ var Payment = /** @class */ (function () {
         __metadata("design:type", Number)
     ], Payment.prototype, "amount", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ type: "datetime", nullable: false }),
-        __metadata("design:type", String)
+        (0, typeorm_1.CreateDateColumn)(),
+        __metadata("design:type", Date)
     ], Payment.prototype, "createdAt", void 0);
     __decorate([
         (0, typeorm_1.ManyToOne)(function () { return customer_entity_1.Customer; }, function (customer) { return customer.payments; }),
