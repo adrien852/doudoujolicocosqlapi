@@ -5,6 +5,7 @@ app.use(express.json())
 let cors = require("cors");
 require('dotenv').config()
 const clientHost = process.env.CLIENT_HOST;
+var http = require('http');
 
 const corsConf = {
   origin: clientHost
@@ -16,8 +17,4 @@ const api = require('./routes/api/index');
 
 app.use('/v1', api);
 
-app.disable('etag');
-
-app.listen(8080, function () {
-    console.log('Server has started on port 8080');
-  });
+http.createServer(app).listen(80);
