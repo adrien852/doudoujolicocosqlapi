@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, Index } from "typeorm"
 import { Category } from "./category.entity"
 
 @Entity()
+@Index(['normalized'], {unique: true})
 export class Product {
     @PrimaryGeneratedColumn()
     id: number

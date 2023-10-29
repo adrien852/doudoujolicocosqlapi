@@ -4,9 +4,7 @@ import { Customer } from "../entity/customer.entity"
 import { Product } from "../entity/product.entity"
 import { Payment } from "../entity/payment.entity";
 import { Request, Response } from "express"
-const productController = require('./product');
-const nodemailer = require('nodemailer');
-var Mailgen = require('mailgen');
+const sendConfirmationEmail = require('../email/templates/paymentConfirmation');
 
 const gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
@@ -48,13 +46,20 @@ const paymentController = {
         })
     },
     async savePaymentId(req: Request, res: Response){
+        const products = await getOrderItems(req.body.payload.items);
         const customer = Object.assign( myDataSource.getRepository(Customer).create({id: req.body.payload.customerId}));
         const payment = Object.assign( myDataSource.getRepository(Payment).create({
+            products: products,
             customer: customer,
             ...req.body.payload
         }));
-        myDataSource.getRepository(Payment).save(payment).then((results) => {
-            sendConfirmationEmail()
+        myDataSource.getRepository(Payment).save(payment).then(async(results) => {
+            const savedPayment = await myDataSource.getRepository(Payment).findOne({
+                where: {
+                    id: results.id,
+                }
+            })
+            sendConfirmationEmail(savedPayment)
             .then((response) => {
                 return res.status(201).json(
                     {
@@ -86,51 +91,19 @@ async function getTotalAmount(items){
     
 }
 
-module.exports = paymentController;
-
-const transporter = nodemailer.createTransport({
-    service: process.env.EMAIL_SERVICE,
-    auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-    },
-});
-
-async function sendConfirmationEmail(){
-    let MailGenerator = new Mailgen({
-        theme: 'default',
-        product: {
-            name: 'YOUR_PRODUCT_NAME',
-            link: 'https://mailgen.js/'
-        }
-    });
-
-    let response = {
-        body: {
-            name: 'Name',
-            intro: 'Welcome to ABC Company! We\'re very excited to have you on board.',
-            action: {
-                instructions: 'To get started with ABC, please click here:',
-                button: {
-                    color: '#22BC66', // Optional action button color
-                    text: 'Confirm your account',
-                    link: 'https://mailgen.js/'
-                }
+async function getOrderItems(items){
+    let dbItems = [];
+    return await Promise.all(items.map(async (item) => {
+        let dbItem = await myDataSource.getRepository(Product).findOne({
+            where: {
+                normalized: item.normalized,
             }
-        }
-    };
-
-    let mail = MailGenerator.generate(response);
-
-    const mailData = {
-        from: 'durougeadrien@gmail.com',  // sender address
-        to: 'durougeadrien@gmail.com',   // list of receivers
-        subject: 'Sending Email using Node.js',
-        text: 'That was easy!',
-        html: mail,
-    }  
-    return transporter.sendMail(mailData);
+        })
+        dbItems.push(dbItem);
+    })).then(() => dbItems)
 }
+
+module.exports = paymentController;
 
 // gateway.transaction.sale({
 //     amount: totalPrice,

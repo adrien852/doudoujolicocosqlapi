@@ -1,5 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, ManyToMany, JoinTable, JoinColumn, OneToMany } from "typeorm"
-import { Product } from "./product.entity"
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from "typeorm"
 import { Address } from "./address.entity"
 import { Payment } from "./payment.entity"
 
@@ -13,6 +12,7 @@ export class Customer {
 
     @OneToOne(() => Address, {
         cascade: true,
+        eager: true
     })
     @JoinColumn()
     shippingAddress: Address
@@ -22,10 +22,6 @@ export class Customer {
     })
     @JoinColumn()
     billingAddress: Address
-
-    @ManyToMany(() => Product)
-    @JoinTable()
-    products: Product[]
 
     @OneToMany(() => Payment, (payment) => payment.customer)
     payments: Payment[]
