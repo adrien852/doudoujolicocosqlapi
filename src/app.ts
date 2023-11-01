@@ -4,9 +4,8 @@ const app = express()
 app.use(express.json())
 let cors = require("cors");
 require('dotenv').config()
+const functions = require("firebase-functions");
 const clientHost = process.env.CLIENT_HOST;
-var http = require('http');
-var path = require('path');
 
 const corsConf = {
   origin: clientHost
@@ -20,4 +19,4 @@ app.use('/v1', api);
 
 app.use('/email',express.static(__dirname+'/email/assets'));
 
-http.createServer(app).listen(80);
+exports.tasks = functions.https.onRequest(app);

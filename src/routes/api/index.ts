@@ -1,20 +1,9 @@
 import * as express from "express"
-import { myDataSource } from "../../app-data-source"
 
 const productController = require('../../controllers/product');
 const categoryController = require('../../controllers/category');
 const paymentController = require('../../controllers/payment');
 const customerController = require('../../controllers/customer');
-
-// establish database connection
-myDataSource
-    .initialize()
-    .then(() => {
-        console.log("Data Source has been initialized!")
-    })
-    .catch((err) => {
-        console.error("Error during Data Source initialization:", err)
-    })
 
 const router = express.Router();
 

@@ -1,10 +1,10 @@
-import { myDataSource } from "../app-data-source"
+import { serviceDS } from "../myDataSource"
 import { Product } from "../entity/product.entity"
 import { Request, Response } from "express"
 
 const productController = {
     async all(req: Request, res: Response) {
-        
+        let myDataSource = await serviceDS;
         const products = await myDataSource.getRepository(Product).find({
             
         })
@@ -12,7 +12,7 @@ const productController = {
     },
     
     async byNormalized(req: Request, res: Response) {
-        
+        let myDataSource = await serviceDS;
         const product = await myDataSource.getRepository(Product).findOne({
             where: {
                 normalized: req.params.normalized,
@@ -22,7 +22,7 @@ const productController = {
     },
 
     async byCategory(req: Request, res: Response) {
-        
+        let myDataSource = await serviceDS;
         const results = await myDataSource.getRepository(Product).find({
             where: {
                 category: {

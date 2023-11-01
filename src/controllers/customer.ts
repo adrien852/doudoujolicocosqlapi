@@ -1,4 +1,4 @@
-import { myDataSource } from "../app-data-source"
+import { serviceDS } from "../myDataSource"
 import { Customer } from "../entity/customer.entity"
 import { Address } from "../entity/address.entity";
 import { Request, Response } from "express"
@@ -19,6 +19,7 @@ const customerController = {
   //     )
   // },
   async save(req: Request, res: Response) {
+    let myDataSource = await serviceDS;
     const serverHmac = validateHmac(secretKey, req.body.payload);
     if(serverHmac == req.body.hmac){
         let shippingAddress = Object.assign( myDataSource.getRepository(Address).create({...req.body.payload.shippingAddress}));
