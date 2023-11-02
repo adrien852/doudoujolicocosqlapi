@@ -58,13 +58,13 @@ function getEmailBody(data){
 module.exports = async function sendConfirmationEmail(data){
     let MailGenerator = new Mailgen({
         theme: {
-            path: path.resolve(__dirname, '../assets/themes/myDefault.html')
+            path: path.resolve(__dirname, '../../assets/themes/myDefault.html')
         },
         product: {
             name: 'Doudou Joli',
             link: 'https://doudoujolicoco.onrender.com/',
             // logo: 'https://doudoujolicoco.onrender.com/assets/full_logo-658056d8.png'
-            logo: process.env.API_HOST+'/email/full_logo.png'
+            logo: process.env.API_HOST+'/static/images/full_logo.png'
         }
     });
 

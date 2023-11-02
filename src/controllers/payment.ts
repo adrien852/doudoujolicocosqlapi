@@ -14,7 +14,7 @@ const gateway = new braintree.BraintreeGateway({
 });
 
 const paymentController = {
-    initialize(req: Request, res: Response) {
+        initialize(req: Request, res: Response) {
         gateway.clientToken.generate({
         }, (err, response) => {
             if (response) {
@@ -69,10 +69,10 @@ const paymentController = {
                     }
                 )
             }).catch((err) => {
-                return res.status(500).json({ msg: err });
+                return res.status(500).json("Email not sent");
             })
         }).catch((err) => {
-            return res.status(500).json(err);
+            return res.status(500).json("Payment not saved");
         })
         
         

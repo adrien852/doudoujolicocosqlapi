@@ -17,6 +17,6 @@ const api = require('./routes/api/index');
 
 app.use('/v1', api);
 
-app.use('/email',express.static(__dirname+'/email/assets'));
+app.use('/static',express.static('assets'));
 
 exports.tasks = functions.https.onRequest(app);
