@@ -17,6 +17,6 @@ const api = require('./routes/api/index');
 
 app.use('/v1', api);
 
-app.use('/static',express.static('assets'));
+app.use(express.static(__dirname + '/assets'));
 
 exports.tasks = functions.https.onRequest(app);

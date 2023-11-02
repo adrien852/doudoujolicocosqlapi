@@ -64,7 +64,7 @@ module.exports = async function sendConfirmationEmail(data){
             name: 'Doudou Joli',
             link: 'https://doudoujolicoco.onrender.com/',
             // logo: 'https://doudoujolicoco.onrender.com/assets/full_logo-658056d8.png'
-            logo: process.env.API_HOST+'/static/images/full_logo.png'
+            logo: process.env.API_HOST+'/images/full_logo.png'
         }
     });
 

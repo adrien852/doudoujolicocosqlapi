@@ -8,14 +8,14 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "remove-lib":"rd /s /q lib",
-    "create-assets-folder": "md lib\\assets",
-    "copy-assets":"Xcopy src\\assets lib\\assets /E/H/C/I"
+    "remove-lib":"rd /s /q dist",
+    "create-assets-folder": "md dist\\assets",
+    "copy-assets":"Xcopy src\\assets dist\\assets /E/H/C/I"
   },
   "engines": {
     "node": "18"
   },
-  "main": "lib/app.js",
+  "main": "dist/app.js",
   "dependencies": {
     "firebase-admin": "^11.8.0",
     "firebase-functions": "^4.3.1",
