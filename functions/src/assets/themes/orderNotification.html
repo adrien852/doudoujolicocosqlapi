@@ -162,11 +162,18 @@ if (locals.action) {
       font-size: 14px;
       font-weight: bold;
     }
-    p {
+    p, li {
       margin-top: 0;
       color: #74787E;
       font-size: 16px;
       line-height: 1.5em;
+    }
+    ul{
+      list-style: none;
+      padding-left: 10px;
+    }
+    .bold{
+      font-weight: bold;
     }
     p.sub {
       font-size: 12px;
@@ -174,7 +181,6 @@ if (locals.action) {
     p.center {
       text-align: center;
     }
-
     /* Data table ------------------------------ */
     .data-table-title {
       width: 100%;
@@ -248,9 +254,9 @@ if (locals.action) {
               <a class="email-masthead_name" href="<%- product.link %>" target="_blank">
                 <% if (locals.product.logo) { %>
                   <% if (product.logoHeight) { %>
-                    <img src="<%- product.logo %>" style="height: <%- product.logoHeight %>;" alt="" />
+                    <img src="<%- product.logo %>" style="height: <%- product.logoHeight %>;" alt="<%- product.name %>" />
                   <% } else { %>
-                    <img src="<%- product.logo %>" class="email-logo" alt="" />
+                    <img src="<%- product.logo %>" class="email-logo" alt="<%- product.name %>" />
                     <% } %>
                 <% } else { %>
                   <%- product.name %>
@@ -326,6 +332,27 @@ if (locals.action) {
                       <% }) %>
                     <% } %>
 
+                    <!-- Customer Info -->
+                    <% if (locals.customerIntro) { %>
+                      <p><%- customerIntro %></p>
+                    <% } %>
+                    <% if (locals.customerData) { %>
+                      <% for (var i in customerData) {%>
+                        <% if (i == "address") { %>
+                          <b><ul>
+                            <% for (var column in customerData[i]) {%>
+                            <li><%- customerData[i][column] %></li>
+                            <% } %>
+                          </ul></b>
+                        <%} else { %>
+                          <ul>
+                          <% for (var column in customerData[i]) {%>
+                            <li><%- customerData[i][column] %></li>
+                          <% } %>
+                          </ul>
+                        <% } %>
+                      <% } %>
+                    <% } %>
                     <!-- Action -->
                     <% if (locals.action.length !== 0) { %>
                       <% action.forEach(function (actionItem) { -%>

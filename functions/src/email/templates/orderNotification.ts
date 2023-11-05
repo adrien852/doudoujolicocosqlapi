@@ -10,7 +10,7 @@ var transporter = nodemailer.createTransport({
     },
 });
 
-function getPaymentConfirmationBody(data){
+function getOrderNotifyBody(data){
     const products = data.products.map((product) => {
         return {
             objet: product.name,
@@ -18,12 +18,27 @@ function getPaymentConfirmationBody(data){
             prix: product.price+'€'
         }
     })
+    const customer = {
+        address: {
+            name: data.customer.shippingAddress.firstName+' '+data.customer.shippingAddress.lastName,
+            address1: data.customer.shippingAddress.address1,
+            address2: data.customer.shippingAddress.address2,
+            cityPostalCode: data.customer.shippingAddress.postalCode+' '+data.customer.shippingAddress.city,
+        },
+        contact: {
+            email: data.customer.email,
+            phone: data.customer.shippingAddress.phone
+        },
+        payment: {
+            paymentId: "Braintree Payment ID: "+data.paymentId
+        }
+    };
     return {
         body: {
             greeting: 'Bonjour',
-            signature: 'A bientôt',
-            name: data.customer.shippingAddress.firstName,
-            intro: 'Votre commande a bien été reçue. Veuillez en trouver les détails ci-dessous.',
+            signature: 'Happy knitting',
+            name: 'Coco',
+            intro: 'Un client a passé une commande sur Doudou Joli ! Veuillez en trouver les détails ci-dessous.',
             table: {
                 data: products,
                 columns: {
@@ -38,6 +53,8 @@ function getPaymentConfirmationBody(data){
                     }
                 }
             },
+            customerIntro: "L'adresse d'expédition et les informations de contact du client sont les suivantes:",
+            customerData: customer,
             // action: {
             //     instructions: 'Vous pouvez me contacter par email pour connaitre l\'avancé de la préparation et expédition de votre commande à l\'adresse suivante : contact@doudoujoli.fr',
             //     button: {
@@ -47,18 +64,17 @@ function getPaymentConfirmationBody(data){
             //     }
             // },
             outro: [
-                'Vous pouvez me contacter par email pour connaitre l\'avancé de la préparation et de l\'expédition de votre commande à l\'adresse suivante : contact@doudoujoli.fr',
-                'Merci beaucoup pour votre confiance.'
+                'N\'oubliez pas de régulièrement donner des nouvelles au client sur l\'avancé de sa commande.',
             ]
 
         }
     };
 }
 
-module.exports = async function sendConfirmationEmail(data){
+module.exports = async function sendOrderNotifEmail(data){
     let MailGenerator = new Mailgen({
         theme: {
-            path: path.resolve(__dirname, '../../assets/themes/paymentConfirmation.html')
+            path: path.resolve(__dirname, '../../assets/themes/orderNotification.html')
         },
         product: {
             name: 'Doudou Joli',
@@ -68,14 +84,14 @@ module.exports = async function sendConfirmationEmail(data){
         }
     });
 
-    const email = getPaymentConfirmationBody(data);
+    const email = getOrderNotifyBody(data);
 
     let mail = MailGenerator.generate(email);
 
     const mailData = {
         from: process.env.EMAIL_FROM,  // sender address
-        to: data.customer.email,   // list of receivers
-        subject: 'Confirmation de votre commande Doudou Joli',
+        to: ['durougeadrien@gmail.com'],   // list of receivers
+        subject: 'Nouvelle commande sur Doudou Joli',
         html: mail,
     }  
     return transporter.sendMail(mailData);

@@ -5,6 +5,7 @@ import { Product } from "../entity/product.entity"
 import { Payment } from "../entity/payment.entity";
 import { Request, Response } from "express"
 const sendConfirmationEmail = require('../email/templates/paymentConfirmation');
+const sendOrderNotifEmail = require('../email/templates/orderNotification');
 
 const gateway = new braintree.BraintreeGateway({
   environment: braintree.Environment.Sandbox,
@@ -60,17 +61,16 @@ const paymentController = {
                     id: results.id,
                 }
             })
-            sendConfirmationEmail(savedPayment)
-            .then((response) => {
-                return res.status(201).json(
-                    {
-                        email: "Email sent",
-                        payment: results
-                    }
-                )
-            }).catch((err) => {
-                return res.status(500).json("Email not sent");
-            })
+            //Send email to customer
+            sendConfirmationEmail(savedPayment);
+            //Send email to doudoujoli
+            sendOrderNotifEmail(savedPayment);
+            return res.status(201).json(
+                {
+                    email: "Payment saved, emails sent in the background",
+                    payment: results
+                }
+            )
         }).catch((err) => {
             return res.status(500).json("Payment not saved");
         })
