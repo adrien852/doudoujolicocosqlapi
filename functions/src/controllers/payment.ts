@@ -4,6 +4,7 @@ import { Customer } from "../entity/customer.entity"
 import { Product } from "../entity/product.entity"
 import { Payment } from "../entity/payment.entity";
 import { Request, Response } from "express"
+import { Order } from "../entity/order.entity";
 const sendConfirmationEmail = require('../email/templates/paymentConfirmation');
 const sendOrderNotifEmail = require('../email/templates/orderNotification');
 
@@ -48,29 +49,38 @@ const paymentController = {
     },
     async savePaymentId(req: Request, res: Response){
         let myDataSource = await serviceDS;
-        const products = await getOrderItems(req.body.payload.items);
+        
         const customer = Object.assign( myDataSource.getRepository(Customer).create({id: req.body.payload.customerId}));
         const payment = Object.assign( myDataSource.getRepository(Payment).create({
-            products: products,
             customer: customer,
             ...req.body.payload
         }));
         myDataSource.getRepository(Payment).save(payment).then(async(results) => {
+            //Retrieve full payment entry
             const savedPayment = await myDataSource.getRepository(Payment).findOne({
                 where: {
                     id: results.id,
                 }
             })
-            //Send email to customer
-            sendConfirmationEmail(savedPayment);
-            //Send email to doudoujoli
-            sendOrderNotifEmail(savedPayment);
-            return res.status(201).json(
-                {
-                    email: "Payment saved, emails sent in the background",
-                    payment: results
-                }
-            )
+            const products = await getOrderItems(req.body.payload.items);
+            const order = Object.assign( myDataSource.getRepository(Order).create({
+                payment: savedPayment,
+                products: products,
+                customer: savedPayment.customer
+            }));
+            //Save order
+            myDataSource.getRepository(Order).save(order).then((results) => {
+                //Send email to customer
+                sendConfirmationEmail(results);
+                //Send email to doudoujoli
+                sendOrderNotifEmail(results);
+                return res.status(201).json(
+                    {
+                        email: "Payment and order saved",
+                        order: results
+                    }
+                )
+            })
         }).catch((err) => {
             return res.status(500).json("Payment not saved");
         })

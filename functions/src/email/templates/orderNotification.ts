@@ -30,7 +30,7 @@ function getOrderNotifyBody(data){
             phone: data.customer.shippingAddress.phone
         },
         payment: {
-            paymentId: "Braintree Payment ID: "+data.paymentId
+            paymentId: "Braintree Payment ID: "+data.payment.paymentId
         }
     };
     return {

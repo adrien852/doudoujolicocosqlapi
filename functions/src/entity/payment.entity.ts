@@ -20,10 +20,4 @@ export class Payment {
         eager: true,
     })
     customer: Customer
-
-    @ManyToMany(() => Product, {
-        eager: true,
-    })
-    @JoinTable()
-    products: Product[]
 }

@@ -4,6 +4,7 @@ const productController = require('../../controllers/product');
 const categoryController = require('../../controllers/category');
 const paymentController = require('../../controllers/payment');
 const customerController = require('../../controllers/customer');
+const orderController = require('../../controllers/order');
 
 const router = express.Router();
 
@@ -19,6 +20,8 @@ router.post("/customers", customerController.save)
 router.post('/payment/save', paymentController.savePaymentId);
 router.get('/payment/initialize', paymentController.initialize);
 router.post('/payment/checkout', paymentController.checkout);
+
+router.get("/orders", orderController.all)
 
 // router.post("/products", async function (req: Request, res: Response) {
 //     const product = await myDataSource.getRepository(Product).create(req.body)
