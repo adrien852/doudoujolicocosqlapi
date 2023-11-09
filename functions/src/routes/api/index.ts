@@ -22,6 +22,8 @@ router.get('/payment/initialize', paymentController.initialize);
 router.post('/payment/checkout', paymentController.checkout);
 
 router.get("/orders", orderController.all)
+router.get("/order/:reference", orderController.byReference)
+router.put("/order/:reference", orderController.update)
 
 // router.post("/products", async function (req: Request, res: Response) {
 //     const product = await myDataSource.getRepository(Product).create(req.body)
