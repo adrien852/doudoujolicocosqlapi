@@ -15,6 +15,9 @@ export class Order {
     @PrimaryGeneratedColumn()
     id: number
 
+    @Column({nullable: false})
+    reference: string
+
     @OneToOne(() => Payment, {
         eager: true,
     })
