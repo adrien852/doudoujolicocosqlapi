@@ -63,7 +63,21 @@ const paymentController = {
                 }
             })
             const products = await getOrderItems(req.body.payload.items);
+            //Create random reference number until it is unique
+            let uniqueReference = "";
+            let existingOrder = null;
+            do{
+                console.log("generating")
+                uniqueReference = randomRef();
+                existingOrder = await myDataSource.getRepository(Order).findOne({
+                    where: {
+                        reference: uniqueReference,
+                    }
+                })
+            }
+            while(existingOrder)
             const order = Object.assign( myDataSource.getRepository(Order).create({
+                reference: uniqueReference,
                 payment: savedPayment,
                 products: products,
                 customer: savedPayment.customer
@@ -114,6 +128,13 @@ async function getOrderItems(items){
         })
         dbItems.push(dbItem);
     })).then(() => dbItems)
+}
+
+function randomRef() {
+    let numbers = '0123456789';
+    var result = 'C';
+    for (var i = 4; i > 0; --i) result += numbers[Math.floor(Math.random() * numbers.length)];
+    return result;
 }
 
 module.exports = paymentController;
