@@ -26,6 +26,7 @@ export class Order {
 
     @ManyToOne(() => Customer, (customer) => customer.orders, {
         eager: true,
+        nullable: false
     })
     customer: Customer
 

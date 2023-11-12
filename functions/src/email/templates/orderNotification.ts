@@ -41,6 +41,7 @@ function getOrderNotifyBody(data){
             intro: 'Un client a passé une commande sur Doudou Joli ! Veuillez en trouver les détails ci-dessous.',
             table: {
                 data: products,
+                title: 'Commande #'+data.reference,
                 columns: {
                     // Optionally, customize the column widths
                     customWidth: {

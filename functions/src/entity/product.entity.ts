@@ -13,10 +13,10 @@ export class Product {
     @Column({nullable: false})
     normalized: string
 
-    @Column("simple-array")
+    @Column("simple-array", { nullable: false })
     images: string[]
 
-    @Column({ nullable: false })
+    @Column('decimal', { precision: 6, scale: 2 , nullable: false})
     price: number
 
     @Column({nullable: false})
@@ -24,6 +24,13 @@ export class Product {
 
     @ManyToOne(() => Category, (category) => category.products, {
         eager: true,
+        nullable: false
     })
     category: Category
+
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
+    createdAt: Date;
+
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: "CURRENT_TIMESTAMP"})
+    modifiedAt: Date;
 }

@@ -11,6 +11,8 @@ const router = express.Router();
 router.get("/products", productController.all)
 router.get("/products/categories/:category", productController.byCategory)
 router.get("/products/:normalized", productController.byNormalized)
+router.put("/inventory/products/:id", productController.update)
+router.get("/inventory/products/:id", productController.byId)
 
 router.get("/categories", categoryController.all)
 router.get("/categories/:normalized", categoryController.byNormalized)

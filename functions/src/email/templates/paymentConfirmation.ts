@@ -26,6 +26,7 @@ function getPaymentConfirmationBody(data){
             intro: 'Votre commande a bien été reçue. Veuillez en trouver les détails ci-dessous.',
             table: {
                 data: products,
+                title: 'Commande #'+data.reference,
                 columns: {
                     // Optionally, customize the column widths
                     customWidth: {
