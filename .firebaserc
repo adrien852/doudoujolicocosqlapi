@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "doudoujoli-610f9"
-  }
+    "default": "doudoujoli-610f9",
+    "prod": "doudoujoli-610f9"
+  },
+  "targets": {},
+  "etags": {}
 }
