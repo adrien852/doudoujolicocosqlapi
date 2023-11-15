@@ -6,7 +6,9 @@ const productController = {
     async all(req: Request, res: Response) {
         let myDataSource = await serviceDS;
         const products = await myDataSource.getRepository(Product).find({
-            
+            order: {
+                id: "DESC"
+            }
         })
         res.send(products)
     },
@@ -50,6 +52,28 @@ const productController = {
         myDataSource.getRepository(Product).update(reqId, {
             ...productPayload
         }).then((results) => {
+            res.send(results)
+        }).catch((error) => {
+            res.send(error)
+        })
+    },
+
+    async save(req: Request, res: Response){
+        let myDataSource = await serviceDS;
+        const productPayload = req.body.payload;
+        myDataSource.getRepository(Product).save({
+            ...productPayload
+        }).then((results) => {
+            res.send(results)
+        }).catch((error) => {
+            res.send(error)
+        })
+    },
+
+    async delete(req: Request, res: Response){
+        let myDataSource = await serviceDS;
+        const reqId = req.params.id;
+        myDataSource.getRepository(Product).delete(reqId).then((results) => {
             res.send(results)
         });
     }
