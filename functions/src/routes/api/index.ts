@@ -5,6 +5,7 @@ const categoryController = require('../../controllers/category');
 const paymentController = require('../../controllers/payment');
 const customerController = require('../../controllers/customer');
 const orderController = require('../../controllers/order');
+const emailController = require('../../controllers/contact')
 
 const router = express.Router();
 
@@ -28,5 +29,7 @@ router.post('/payment/checkout', paymentController.checkout);
 router.get("/orders", orderController.all)
 router.get("/order/:reference", orderController.byReference)
 router.put("/order/:reference", orderController.update)
+
+router.post("/email/contact", emailController.sendContact)
 
 module.exports = router;

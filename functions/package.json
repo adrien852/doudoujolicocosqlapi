@@ -4,7 +4,7 @@
     "serve": "tsc && firebase emulators:start --only functions",
     "build": "npm run remove-lib && tsc && npm run create-assets-folder && npm run copy-assets",
     "build:watch": "tsc --watch",
-    "super-serve": "npm run build && firebase emulators:start --only functions",
+    "super-serve": "npm run build && tsc && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions -P prod",
