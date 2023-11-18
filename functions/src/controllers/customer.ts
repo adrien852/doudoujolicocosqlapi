@@ -73,11 +73,17 @@ const customerController = {
         res.sendStatus(200)
       }
       else{
-        res.status(401).send('Wrong password');
+        res.status(401).send({
+          code: "password",
+          message: "Wrong password"
+        });
       }
     }
     else{
-      res.status(401).send('Email not found');
+      res.status(401).send({
+        code: "email",
+        message: 'Email not found'
+      });
     }
   }
 };
