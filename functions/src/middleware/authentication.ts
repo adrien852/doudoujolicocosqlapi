@@ -23,7 +23,7 @@ const authenticationMiddleware = {
         jwt.verify(token, process.env.JWT_TOKEN_SECRET as string, (err: any, user: any) => {
       
           if (err) return res.sendStatus(403)
-          if(user.email !== process.env.ADMIN_LOGIN) return res.sendStatus(403)
+          if(user.email.toLowerCase() !== process.env.ADMIN_LOGIN) return res.sendStatus(403)
       
           next()
         })
