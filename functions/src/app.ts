@@ -8,7 +8,8 @@ const functions = require("firebase-functions");
 const clientHost = process.env.CLIENT_HOST;
 
 const corsConf = {
-  origin: clientHost
+  origin: clientHost,
+  credentials: true,
 }
 
 app.use(cors(corsConf));

@@ -2,9 +2,10 @@ import { serviceDS } from "../myDataSource"
 import { Customer } from "../entity/customer.entity"
 import { Address } from "../entity/address.entity";
 import { Request, Response } from "express"
+import * as bcrypt from 'bcrypt';
 const CryptoJS = require("crypto-js");
 const secretKey = process.env.SECRET_KEY;
-
+const authenticationMiddleware = require('../middleware/authentication')
 
 function validateHmac(secretKey, receivedPayload){
     return CryptoJS.enc.Hex.stringify(CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secretKey).update(receivedPayload).finalize());
@@ -44,7 +45,52 @@ const customerController = {
     else{
         res.status(500).send('Wrong HMAC');
     }
+  },
+
+  async signIn(req: Request, res: Response) {
+    let myDataSource = await serviceDS;
+    const myEncryptPassword = await Encrypt.cryptPassword(req.body.payload.password);
+    let customer = myDataSource.getRepository(Customer).create({
+        password: myEncryptPassword,
+        email: req.body.payload.email
+    })
+    const results = await myDataSource.getRepository(Customer).save(customer)
+    return res.send(results)
+  },
+  
+  async login(req: Request, res: Response) {
+    let myDataSource = await serviceDS;
+    const customer = await myDataSource.getRepository(Customer).findOne({
+        where: {
+            email: req.body.payload.email,
+        }
+    })
+    if(customer){
+      const isPasswordCorrect = await Encrypt.comparePassword(req.body.payload.password, customer.password);
+      if(isPasswordCorrect){
+        const token = authenticationMiddleware.generateAccessToken(req.body.payload.email, req.body.payload.password)
+        res.cookie("token", token, {httpOnly: true, sameSite: "none", secure:true})
+        res.sendStatus(200)
+      }
+      else{
+        res.status(401).send('Wrong password');
+      }
+    }
+    else{
+      res.status(401).send('Email not found');
+    }
   }
 };
+
+const Encrypt = {
+  cryptPassword: (password: string) =>
+      bcrypt.genSalt(10)
+      .then((salt => bcrypt.hash(password, salt)))
+      .then(hash => hash),
+  
+      comparePassword: (password: string, hashPassword: string) =>
+          bcrypt.compare(password, hashPassword)
+          .then(resp => resp)
+}
 
 module.exports = customerController;

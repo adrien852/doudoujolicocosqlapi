@@ -11,6 +11,9 @@ export class Customer {
     @Column({nullable: false})
     email: string
 
+    @Column({nullable: true})
+    password: string
+
     @OneToOne(() => Address, {
         cascade: true,
         eager: true
