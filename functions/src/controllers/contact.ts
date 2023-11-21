@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { serviceDS } from "../myDataSource"
+import { myDataSource } from "../myDataSource"
 const sendContactEmail = require('../email/templates/contact');
 
 const emailController = {

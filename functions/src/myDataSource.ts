@@ -1,8 +1,8 @@
 import { DataSource } from "typeorm"
+import * as dotenv from "dotenv";
+dotenv.config();
 
-// establish database connection
-const connToDS = async() => {
-    const dataSourceConn = new DataSource(
+    export const myDataSource = new DataSource(
         {
             type: "mysql",
             host: process.env.DATABASE_HOST,
@@ -15,13 +15,3 @@ const connToDS = async() => {
             synchronize: true,
         }
     );
-    try{
-        await dataSourceConn.initialize();
-        console.log("Data Source has been initialized!");
-        return dataSourceConn;
-    }catch(err){
-        console.error("Error during Data Source initialization", err);        
-    }
-}
-
-export const serviceDS = connToDS();

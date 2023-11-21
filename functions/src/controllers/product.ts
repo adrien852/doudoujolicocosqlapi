@@ -1,10 +1,10 @@
-import { serviceDS } from "../myDataSource"
+import { myDataSource } from "../myDataSource"
 import { Product } from "../entity/product.entity"
 import { Request, Response } from "express"
 
 const productController = {
     async all(req: Request, res: Response) {
-        let myDataSource = await serviceDS;
+        
         const products = await myDataSource.getRepository(Product).find({
             order: {
                 id: "DESC"
@@ -14,7 +14,7 @@ const productController = {
     },
     
     async byNormalized(req: Request, res: Response) {
-        let myDataSource = await serviceDS;
+        
         const product = await myDataSource.getRepository(Product).findOne({
             where: {
                 normalized: req.params.normalized,
@@ -24,7 +24,7 @@ const productController = {
     },
 
     async byId(req: Request, res: Response) {
-        let myDataSource = await serviceDS;
+        
         const product = await myDataSource.getRepository(Product).findOne({
             where: {
                 id: Number(req.params.id),
@@ -34,7 +34,7 @@ const productController = {
     },
 
     async byCategory(req: Request, res: Response) {
-        let myDataSource = await serviceDS;
+        
         const results = await myDataSource.getRepository(Product).find({
             where: {
                 category: {
@@ -46,7 +46,7 @@ const productController = {
     },
 
     async update(req: Request, res: Response){
-        let myDataSource = await serviceDS;
+        
         const productPayload = req.body.payload;
         const reqId = req.params.id;
         myDataSource.getRepository(Product).update(reqId, {
@@ -59,7 +59,7 @@ const productController = {
     },
 
     async save(req: Request, res: Response){
-        let myDataSource = await serviceDS;
+        
         const productPayload = req.body.payload;
         myDataSource.getRepository(Product).save({
             ...productPayload
@@ -71,7 +71,7 @@ const productController = {
     },
 
     async delete(req: Request, res: Response){
-        let myDataSource = await serviceDS;
+        
         const reqId = req.params.id;
         myDataSource.getRepository(Product).delete(reqId).then((results) => {
             res.send(results)
