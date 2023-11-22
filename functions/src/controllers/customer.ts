@@ -1,4 +1,4 @@
-import { myDataSource } from "../myDataSource"
+import { serviceDS } from "../myDataSource"
 import { Customer } from "../entity/customer.entity"
 import { Address } from "../entity/address.entity";
 import { Request, Response } from "express"
@@ -20,7 +20,7 @@ const customerController = {
   //     )
   // },
   async save(req: Request, res: Response) {
-    
+    let myDataSource = await serviceDS;
     const serverHmac = validateHmac(secretKey, req.body.payload);
     if(serverHmac == req.body.hmac){
         let shippingAddress = Object.assign( myDataSource.getRepository(Address).create({...req.body.payload.shippingAddress}));
@@ -48,7 +48,7 @@ const customerController = {
   },
 
   async signIn(req: Request, res: Response) {
-    
+    let myDataSource = await serviceDS;
     const myEncryptPassword = await Encrypt.cryptPassword(req.body.payload.password);
     let customer = myDataSource.getRepository(Customer).create({
         password: myEncryptPassword,
@@ -59,7 +59,7 @@ const customerController = {
   },
   
   async login(req: Request, res: Response) {
-    
+    let myDataSource = await serviceDS;
     const customer = await myDataSource.getRepository(Customer).findOne({
         where: {
             email: req.body.payload.email,

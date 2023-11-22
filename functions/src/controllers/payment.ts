@@ -1,5 +1,5 @@
 const braintree = require("braintree");
-import { myDataSource } from "../myDataSource"
+import { serviceDS } from "../myDataSource"
 import { Customer } from "../entity/customer.entity"
 import { Product } from "../entity/product.entity"
 import { Payment } from "../entity/payment.entity";
@@ -48,7 +48,7 @@ const paymentController = {
         })
     },
     async savePaymentId(req: Request, res: Response){
-        
+        let myDataSource = await serviceDS;
         
         const customer = Object.assign( myDataSource.getRepository(Customer).create({id: req.body.payload.customerId}));
         const payment = Object.assign( myDataSource.getRepository(Payment).create({
@@ -104,7 +104,7 @@ const paymentController = {
 }
 
 async function getTotalAmount(items){
-    
+    let myDataSource = await serviceDS;
     let totalAmount = 0;
     return await Promise.all(items.map(async (item) => {
         const apiItem = await myDataSource.getRepository(Product).findOne({
@@ -118,7 +118,7 @@ async function getTotalAmount(items){
 }
 
 async function getOrderItems(items){
-    
+    let myDataSource = await serviceDS;
     let dbItems = [];
     return await Promise.all(items.map(async (item) => {
         let dbItem = await myDataSource.getRepository(Product).findOne({
