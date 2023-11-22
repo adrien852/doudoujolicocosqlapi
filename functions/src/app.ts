@@ -28,5 +28,7 @@ myDataSource.initialize()
   console.log("Data Source has been initialized!");
 })
 
-http.createServer(app).listen(8080);
+app.listen(8080, () => {
+  console.log('Server running on port 8080');
+});
 
