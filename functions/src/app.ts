@@ -27,8 +27,6 @@ myDataSource.initialize()
   console.log("Data Source has been initialized!");
 })
 
-app.listen(3000, () => {
+app.listen(8080 , () => {
   console.log('Server is running on port 3000');
 });
-
-exports.tasks = functions.https.onRequest(app);
