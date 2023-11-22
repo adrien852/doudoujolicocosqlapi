@@ -7,6 +7,7 @@ let cors = require("cors");
 require('dotenv').config()
 const functions = require("firebase-functions");
 const clientHost = process.env.CLIENT_HOST;
+var http = require('http');
 
 const corsConf = {
   origin: clientHost,
@@ -27,6 +28,5 @@ myDataSource.initialize()
   console.log("Data Source has been initialized!");
 })
 
-app.listen(8080 , () => {
-  console.log('Server is running on port 3000');
-});
+http.createServer(app).listen(8080);
+
