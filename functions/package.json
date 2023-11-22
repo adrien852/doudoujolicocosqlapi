@@ -2,7 +2,8 @@
   "name": "functions",
   "scripts": {
     "serve": "tsc && firebase emulators:start --only functions",
-    "build": "npm run remove-lib && tsc && npm run create-assets-folder && npm run copy-assets",
+    "local-build": "npm run remove-lib && tsc && npm run create-assets-folder && npm run copy-assets",
+    "build": "tsc",
     "build:watch": "tsc --watch",
     "super-serve": "npm run build && tsc && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
