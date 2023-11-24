@@ -70,7 +70,18 @@ const customerController = {
       if(isPasswordCorrect){
         const token = authenticationMiddleware.generateAccessToken(req.body.payload.email, req.body.payload.password)
         res.cookie("token", token, {httpOnly: true, sameSite: "none", secure:true})
-        res.sendStatus(200)
+        if(req.body.payload.email.toLowerCase() === process.env.ADMIN_LOGIN){
+          res.status(200).send({
+            isAdmin: true,
+            message: "Admin logged in"
+          });
+        }
+        else{
+          res.status(200).send({
+            isAdmin: false,
+            message: "User logged in"
+          });
+        }
       }
       else{
         res.status(401).send({
