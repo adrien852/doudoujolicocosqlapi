@@ -28,6 +28,8 @@ router.post('/payment/checkout', paymentController.checkout);
 router.post("/email/contact", emailController.sendContact)
 
 //Admin API
+router.get("/loginCheck", authenticationMiddleware.authenticateAdminToken, authenticationMiddleware.loginCheck)
+
 router.get("/inventory/products", authenticationMiddleware.authenticateAdminToken, productController.all)
 router.put("/inventory/products/:id", authenticationMiddleware.authenticateAdminToken, productController.update)
 router.get("/inventory/products/:id", authenticationMiddleware.authenticateAdminToken, productController.byId)
