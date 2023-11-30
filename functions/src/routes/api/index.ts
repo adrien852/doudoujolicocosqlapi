@@ -36,6 +36,12 @@ router.get("/inventory/products/:id", authenticationMiddleware.authenticateAdmin
 router.post("/inventory/products", authenticationMiddleware.authenticateAdminToken, productController.save)
 router.delete("/inventory/products/:id", authenticationMiddleware.authenticateAdminToken, productController.delete)
 
+router.get("/inventory/categories", authenticationMiddleware.authenticateAdminToken, categoryController.all)
+router.put("/inventory/categories/:id", authenticationMiddleware.authenticateAdminToken, categoryController.update)
+router.get("/inventory/categories/:id", authenticationMiddleware.authenticateAdminToken, categoryController.byId)
+router.post("/inventory/categories", authenticationMiddleware.authenticateAdminToken, categoryController.save)
+router.delete("/inventory/categories/:id", authenticationMiddleware.authenticateAdminToken, categoryController.delete)
+
 router.get("/orders", authenticationMiddleware.authenticateAdminToken, orderController.all)
 router.get("/order/:reference", authenticationMiddleware.authenticateAdminToken, orderController.byReference)
 router.put("/order/:reference", authenticationMiddleware.authenticateAdminToken, orderController.update)
