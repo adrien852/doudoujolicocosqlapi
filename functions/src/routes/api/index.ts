@@ -39,5 +39,6 @@ router.delete("/inventory/products/:id", authenticationMiddleware.authenticateAd
 router.get("/orders", authenticationMiddleware.authenticateAdminToken, orderController.all)
 router.get("/order/:reference", authenticationMiddleware.authenticateAdminToken, orderController.byReference)
 router.put("/order/:reference", authenticationMiddleware.authenticateAdminToken, orderController.update)
+router.post("/order/sendEmail/:reference", authenticationMiddleware.authenticateAdminToken, orderController.sendEmail)
 
 module.exports = router;

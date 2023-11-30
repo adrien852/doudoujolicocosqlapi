@@ -90,7 +90,7 @@ const paymentController = {
                 sendOrderNotifEmail(results);
                 return res.status(201).json(
                     {
-                        email: "Payment and order saved",
+                        message: "Payment and order saved",
                         order: results
                     }
                 )

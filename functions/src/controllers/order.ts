@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import { serviceDS } from "../myDataSource"
 import { Order } from "../entity/order.entity";
+const sendStatusChanged = require('../email/templates/statusChange');
 
 const orderController = {
     async all(req: Request, res: Response) {
@@ -33,6 +34,22 @@ const orderController = {
         }).then((results) => {
             res.send(results)
         });
+    },
+    async sendEmail(req: Request, res: Response) {
+        let myDataSource = await serviceDS;
+        const orderRef = req.params.reference;
+        const order = await myDataSource.getRepository(Order).findOne({
+            where: {
+                reference: orderRef
+            }
+        })
+        const data = {...order, ...req.body.payload}
+        await sendStatusChanged(data);
+        return res.status(201).json(
+            {
+                message: "Email sent"
+            }
+        )
     }
 }
 
