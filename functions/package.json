@@ -1,13 +1,13 @@
 {
   "name": "functions",
   "scripts": {
-    "serve": "tsc && firebase emulators:start --only functions",
+    "serve": "tsc && firebase emulators:start",
     "build": "npm run remove-lib && tsc && npm run create-assets-folder && npm run copy-assets",
     "build:watch": "tsc --watch",
     "super-serve": "npm run build && tsc && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
-    "deploy": "firebase deploy --only functions -P prod",
+    "deploy": "firebase deploy -P prod",
     "logs": "firebase functions:log",
     "remove-lib": "rd /s /q dist",
     "create-assets-folder": "md dist\\assets",

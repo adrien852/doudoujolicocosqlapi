@@ -16,8 +16,8 @@ app.use(cors(corsConf));
 
 const api = require('./routes/api/index');
 
-app.use('/v1', api);
+app.use('/api', api);
 
 app.use(express.static(__dirname + '/assets'));
 
-exports.tasks = functions.https.onRequest(app);
+exports.api = functions.https.onRequest(app);

@@ -48,7 +48,7 @@ function getPaymentConfirmationBody(data){
             //     }
             // },
             outro: [
-                'Vous pouvez me contacter par email pour connaitre l\'avancé de la préparation et de l\'expédition de votre commande à l\'adresse suivante : contact@doudoujoli.fr',
+                'Vous pouvez me contacter par email ou répondre à cet email pour connaitre l\'avancé de la préparation et de l\'expédition de votre commande à l\'adresse suivante : doudoujolicoco@gmail.com',
                 'Merci beaucoup pour votre confiance.'
             ]
 
@@ -64,8 +64,7 @@ module.exports = async function sendConfirmationEmail(data){
         product: {
             name: 'Doudou Joli',
             link: process.env.CLIENT_HOST,
-            // logo: 'https://doudoujolicoco.onrender.com/assets/full_logo-658056d8.png'
-            logo: process.env.API_HOST+'/images/full_logo.png'
+            logo: 'https://firebasestorage.googleapis.com/v0/b/doudoujoli-610f9.appspot.com/o/full_logo.png?alt=media&token=976ecd8d-f055-4176-a764-3e20352453e8'
         }
     });
 

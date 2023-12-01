@@ -80,8 +80,7 @@ module.exports = async function sendOrderNotifEmail(data){
         product: {
             name: 'Doudou Joli',
             link: process.env.CLIENT_HOST,
-            // logo: 'https://doudoujolicoco.onrender.com/assets/full_logo-658056d8.png'
-            logo: process.env.API_HOST+'/images/full_logo.png'
+            logo: 'https://firebasestorage.googleapis.com/v0/b/doudoujoli-610f9.appspot.com/o/full_logo.png?alt=media&token=976ecd8d-f055-4176-a764-3e20352453e8'
         }
     });
 
@@ -91,7 +90,7 @@ module.exports = async function sendOrderNotifEmail(data){
 
     const mailData = {
         from: process.env.EMAIL_FROM,  // sender address
-        to: ['durougeadrien@gmail.com'],   // list of receivers
+        to: process.env.EMAIL_FROM,   // list of receivers
         subject: 'Nouvelle commande sur Doudou Joli',
         html: mail,
     }  

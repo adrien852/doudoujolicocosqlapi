@@ -55,7 +55,7 @@ function getStatusChangeBody(data){
             //     }
             // },
             outro: [
-                'Vous pouvez me contacter par email ou répondre à cet email pour connaitre l\'avancé de la préparation et de l\'expédition de votre commande à l\'adresse suivante : contact@doudoujoli.fr',
+                'Vous pouvez me contacter par email ou répondre à cet email pour connaitre l\'avancé de la préparation et de l\'expédition de votre commande à l\'adresse suivante : doudoujolicoco@gmail.com',
                 'Merci beaucoup pour votre confiance.'
             ]
 
