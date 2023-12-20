@@ -6,6 +6,7 @@ let cors = require("cors");
 require('dotenv').config()
 const functions = require("firebase-functions");
 const clientHost = process.env.CLIENT_HOST;
+const cookieParser = require("cookie-parser");
 
 const corsConf = {
   origin: clientHost,
@@ -13,6 +14,8 @@ const corsConf = {
 }
 
 app.use(cors(corsConf));
+
+app.use(cookieParser());
 
 const api = require('./routes/api/index');
 

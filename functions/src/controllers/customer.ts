@@ -69,7 +69,17 @@ const customerController = {
       const isPasswordCorrect = await Encrypt.comparePassword(req.body.payload.password, customer.password);
       if(isPasswordCorrect){
         const token = authenticationMiddleware.generateAccessToken(req.body.payload.email, req.body.payload.password)
-        res.cookie("token", token, {httpOnly: true, sameSite: "none", secure:true})
+        const cookieOptions = process.env.NODE_ENV === 'production' ? {
+          httpOnly: true,
+          secure: true, 
+          domain:"."+process.env.DOMAIN, 
+          sameSite: true,
+          maxAge: 1000 * 60 * 60 * 10
+        } : {
+          secure: false,
+          sameSite: false
+        };
+        res.cookie("__session", token, cookieOptions)
         if(req.body.payload.email.toLowerCase() === process.env.ADMIN_LOGIN){
           res.status(200).send({
             isAdmin: true,

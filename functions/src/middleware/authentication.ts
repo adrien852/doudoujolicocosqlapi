@@ -15,16 +15,15 @@ const authenticationMiddleware = {
     },
 
     authenticateAdminToken(req: Request, res: Response, next) {
-        const authHeader = req.headers['cookie']
-        const token = authHeader && authHeader.split('=')[1]
-      
+        const token = req.cookies['__session']
+
         if (token == null) return res.sendStatus(401)
       
         jwt.verify(token, process.env.JWT_TOKEN_SECRET as string, (err: any, user: any) => {
       
-          if (err) return res.sendStatus(403)
-          if(user.email.toLowerCase() !== process.env.ADMIN_LOGIN) return res.sendStatus(403)
-      
+          if (err) return res.status(403).json('Token unverified - '+token)
+          if(user.email.toLowerCase() !== process.env.ADMIN_LOGIN) return res.status(403).json('Not admin token - '+token)
+            
           next()
         })
     },
