@@ -57,7 +57,7 @@ function getOrderNotifyBody(data){
             customerIntro: "L'adresse d'expédition et les informations de contact du client sont les suivantes:",
             customerData: customer,
             // action: {
-            //     instructions: 'Vous pouvez me contacter par email pour connaitre l\'avancé de la préparation et expédition de votre commande à l\'adresse suivante : contact@doudoujoli.fr',
+            //     instructions: 'Vous pouvez me contacter par email pour connaitre l\'avancée de la préparation et expédition de votre commande à l\'adresse suivante : contact@doudoujoli.fr',
             //     button: {
             //         color: '#3869D4',
             //         text: 'Go to Dashboard',
@@ -65,7 +65,7 @@ function getOrderNotifyBody(data){
             //     }
             // },
             outro: [
-                'N\'oubliez pas de régulièrement donner des nouvelles au client sur l\'avancé de sa commande.',
+                'N\'oubliez pas de régulièrement donner des nouvelles au client sur l\'avancée de sa commande.',
             ]
 
         }

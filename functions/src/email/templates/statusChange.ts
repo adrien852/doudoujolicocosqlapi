@@ -47,7 +47,7 @@ function getStatusChangeBody(data){
                 }
             },
             // action: {
-            //     instructions: 'Vous pouvez me contacter par email pour connaitre l\'avancé de la préparation et expédition de votre commande à l\'adresse suivante : contact@doudoujoli.fr',
+            //     instructions: 'Vous pouvez me contacter par email pour connaitre l\'avancée de la préparation et expédition de votre commande à l\'adresse suivante : contact@doudoujoli.fr',
             //     button: {
             //         color: '#3869D4',
             //         text: 'Go to Dashboard',
@@ -55,7 +55,7 @@ function getStatusChangeBody(data){
             //     }
             // },
             outro: [
-                'Vous pouvez me contacter par email ou répondre à cet email pour connaitre l\'avancé de la préparation et de l\'expédition de votre commande à l\'adresse suivante : doudoujolicoco@gmail.com',
+                'Vous pouvez me contacter par email ou répondre à cet email pour connaitre l\'avancée de la préparation et de l\'expédition de votre commande à l\'adresse suivante : doudoujolicoco@gmail.com',
                 'Merci beaucoup pour votre confiance.'
             ]
 
