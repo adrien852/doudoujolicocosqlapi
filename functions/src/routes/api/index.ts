@@ -10,7 +10,7 @@ const authenticationMiddleware = require('../../middleware/authentication')
 
 const router = express.Router();
 
-router.get("/products", productController.all)
+router.get("/products", productController.allAvailable)
 router.get("/products/categories/:category", productController.byCategory)
 router.get("/products/:normalized", productController.byNormalized)
 

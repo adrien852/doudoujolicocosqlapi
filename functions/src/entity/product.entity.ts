@@ -28,6 +28,9 @@ export class Product {
     })
     category: Category
 
+    @Column({nullable: false})
+    stock: number
+
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     createdAt: Date;
 

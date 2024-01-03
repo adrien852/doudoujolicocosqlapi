@@ -1,11 +1,25 @@
 import { serviceDS } from "../myDataSource"
 import { Product } from "../entity/product.entity"
 import { Request, Response } from "express"
+import { MoreThan } from "typeorm";
 
 const productController = {
     async all(req: Request, res: Response) {
         let myDataSource = await serviceDS;
         const products = await myDataSource.getRepository(Product).find({
+            order: {
+                id: "DESC"
+            }
+        })
+        res.send(products)
+    },
+
+    async allAvailable(req: Request, res: Response) {
+        let myDataSource = await serviceDS;
+        const products = await myDataSource.getRepository(Product).find({
+            where: {
+                stock: MoreThan(0)
+            },
             order: {
                 id: "DESC"
             }
@@ -18,6 +32,7 @@ const productController = {
         const product = await myDataSource.getRepository(Product).findOne({
             where: {
                 normalized: req.params.normalized,
+                stock: MoreThan(0)
             }
         })
         res.send(product)
@@ -39,7 +54,8 @@ const productController = {
             where: {
                 category: {
                     normalized: req.params.category
-                }
+                },
+                stock: MoreThan(0)
             }
         })
         return res.send(results)
