@@ -1,4 +1,5 @@
 const braintree = require("braintree");
+const stripe = require('stripe')(`${process.env.STRIPE_API_KEY}`);
 import { serviceDS } from "../myDataSource"
 import { Customer } from "../entity/customer.entity"
 import { Product } from "../entity/product.entity"
@@ -8,45 +9,82 @@ import { Order } from "../entity/order.entity";
 const sendConfirmationEmail = require('../email/templates/paymentConfirmation');
 const sendOrderNotifEmail = require('../email/templates/orderNotification');
 
-const gateway = new braintree.BraintreeGateway({
-  environment: braintree.Environment.Sandbox,
-  merchantId: process.env.BRAINTREE_MERCHANT_ID,
-  publicKey: process.env.BRAINTREE_PUBLIC_KEY,
-  privateKey: process.env.BRAINTREE_PRIVATE_KEY
-});
+// const gateway = new braintree.BraintreeGateway({
+//   environment: braintree.Environment.Sandbox,
+//   merchantId: process.env.BRAINTREE_MERCHANT_ID,
+//   publicKey: process.env.BRAINTREE_PUBLIC_KEY,
+//   privateKey: process.env.BRAINTREE_PRIVATE_KEY
+// });
 
 const paymentController = {
-        initialize(req: Request, res: Response) {
-        gateway.clientToken.generate({
-        }, (err, response) => {
-            if (response) {
-                const clientToken = response.clientToken
-                res.send({clientToken})            
-            } else {
-                res.status(500).send(err);
-            }
+    //Braintree payment process
+
+    // initialize(req: Request, res: Response) {
+    //     gateway.clientToken.generate({
+    //     }, (err, response) => {
+    //         if (response) {
+    //             const clientToken = response.clientToken
+    //             res.send({clientToken})            
+    //         } else {
+    //             res.status(500).send(err);
+    //         }
+    //     });
+    // },
+    // async checkout(req: Request, res: Response) {
+    //     const nonceFromTheClient = req.body.payload.paymentMethodNonce;
+    //     getTotalAmount(req.body.payload.cartItems).then((totalAmount) => {
+    //         gateway.transaction.sale({
+    //             amount: totalAmount,
+    //             paymentMethodNonce: nonceFromTheClient,
+    //             options: {
+    //                 // This option requests the funds from the transaction
+    //                 // once it has been authorized successfully
+    //                 submitForSettlement: true
+    //             }
+    //         }, (error, result) => {
+    //             if (result) {
+    //                 res.send(result);
+    //             } else {
+    //                 res.status(500).send(error);
+    //             }
+    //         });
+    //     })
+    // },
+
+    async checkout(req: Request, res: Response) {
+        const products = await getOrderItems(req.body.payload.cartItems);
+        const session = await stripe.checkout.sessions.create({
+            locale: 'fr',
+            ui_mode: 'embedded',
+            line_items: products.map(product => {
+                return {
+                    price_data: {
+                        currency: 'eur',
+                        product_data: {
+                            name: product.name
+                        },
+                        unit_amount: product.price*100
+                    },
+                    quantity: 1
+                }
+            }),
+            mode: 'payment',
+            payment_method_types: ['card', 'paypal'],
+            return_url: `${process.env.CLIENT_HOST}/confirmation-paiement?session_id={CHECKOUT_SESSION_ID}`,
+        });
+        
+        res.send({clientSecret: session.client_secret});
+    },
+
+    async getSessionStatus(req: Request, res: Response){
+        const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
+
+        res.send({
+          status: session.status,
+          customer_email: session.customer_details.email
         });
     },
-    async checkout(req: Request, res: Response) {
-        const nonceFromTheClient = req.body.payload.paymentMethodNonce;
-        getTotalAmount(req.body.payload.cartItems).then((totalAmount) => {
-            gateway.transaction.sale({
-                amount: totalAmount,
-                paymentMethodNonce: nonceFromTheClient,
-                options: {
-                    // This option requests the funds from the transaction
-                    // once it has been authorized successfully
-                    submitForSettlement: true
-                }
-            }, (error, result) => {
-                if (result) {
-                    res.send(result);
-                } else {
-                    res.status(500).send(error);
-                }
-            });
-        })
-    },
+
     async savePaymentId(req: Request, res: Response){
         let myDataSource = await serviceDS;
         

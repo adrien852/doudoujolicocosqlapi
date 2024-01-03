@@ -22,8 +22,9 @@ router.post("/signIn", customerController.signIn)
 router.post("/login", customerController.login)
 
 router.post('/payment/save', paymentController.savePaymentId);
-router.get('/payment/initialize', paymentController.initialize);
+// router.get('/payment/initialize', paymentController.initialize);
 router.post('/payment/checkout', paymentController.checkout);
+router.get('/payment/session', paymentController.getSessionStatus);
 
 router.post("/email/contact", emailController.sendContact)
 

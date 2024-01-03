@@ -32,6 +32,7 @@
     "mysql": "^2.18.1",
     "nodemailer": "^6.9.7",
     "reflect-metadata": "^0.1.13",
+    "stripe": "^14.10.0",
     "typeorm": "^0.3.17"
   },
   "devDependencies": {
