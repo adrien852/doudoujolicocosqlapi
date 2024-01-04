@@ -19,6 +19,9 @@ export class Product {
     @Column('decimal', { precision: 6, scale: 2 , nullable: false})
     price: number
 
+    @Column('decimal', { precision: 6, scale: 2 , nullable: false})
+    originalPrice: number
+
     @Column({nullable: false})
     description: string
 
