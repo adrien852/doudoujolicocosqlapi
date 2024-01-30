@@ -20,7 +20,7 @@ function getOrderNotifyBody(data){
     })
     const customer = {
         address: {
-            name: data.customer.shippingAddress.firstName+' '+data.customer.shippingAddress.lastName,
+            name: data.customer.shippingAddress.name,
             address1: data.customer.shippingAddress.address1,
             address2: data.customer.shippingAddress.address2,
             cityPostalCode: data.customer.shippingAddress.postalCode+' '+data.customer.shippingAddress.city,
@@ -30,7 +30,7 @@ function getOrderNotifyBody(data){
             phone: data.customer.shippingAddress.phone
         },
         payment: {
-            paymentId: "Braintree Payment ID: "+data.payment.paymentId
+            paymentId: "Stripe Payment ID: "+data.payment.paymentId
         }
     };
     return {

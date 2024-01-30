@@ -22,7 +22,7 @@ function getPaymentConfirmationBody(data){
         body: {
             greeting: 'Bonjour',
             signature: 'A bientôt',
-            name: data.customer.shippingAddress.firstName,
+            name: data.customer.shippingAddress.name,
             intro: 'Votre commande a bien été reçue. Veuillez en trouver les détails ci-dessous.',
             table: {
                 data: products,

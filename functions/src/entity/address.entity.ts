@@ -6,10 +6,7 @@ export class Address {
     id: number
 
     @Column({nullable: false})
-    firstName: string
-
-    @Column({nullable: false})
-    lastName: string
+    name: string
 
     @Column({nullable: false})
     city: string
@@ -23,6 +20,6 @@ export class Address {
     @Column({nullable: true})
     address2: string
 
-    @Column({nullable: false})
+    @Column({nullable: true})
     phone: string
 }

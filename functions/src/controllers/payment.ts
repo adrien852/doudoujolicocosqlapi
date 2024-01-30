@@ -8,48 +8,9 @@ import { Request, Response } from "express"
 import { Order } from "../entity/order.entity";
 const sendConfirmationEmail = require('../email/templates/paymentConfirmation');
 const sendOrderNotifEmail = require('../email/templates/orderNotification');
-
-// const gateway = new braintree.BraintreeGateway({
-//   environment: braintree.Environment.Sandbox,
-//   merchantId: process.env.BRAINTREE_MERCHANT_ID,
-//   publicKey: process.env.BRAINTREE_PUBLIC_KEY,
-//   privateKey: process.env.BRAINTREE_PRIVATE_KEY
-// });
+const customerController = require('./customer');
 
 const paymentController = {
-    //Braintree payment process
-
-    // initialize(req: Request, res: Response) {
-    //     gateway.clientToken.generate({
-    //     }, (err, response) => {
-    //         if (response) {
-    //             const clientToken = response.clientToken
-    //             res.send({clientToken})            
-    //         } else {
-    //             res.status(500).send(err);
-    //         }
-    //     });
-    // },
-    // async checkout(req: Request, res: Response) {
-    //     const nonceFromTheClient = req.body.payload.paymentMethodNonce;
-    //     getTotalAmount(req.body.payload.cartItems).then((totalAmount) => {
-    //         gateway.transaction.sale({
-    //             amount: totalAmount,
-    //             paymentMethodNonce: nonceFromTheClient,
-    //             options: {
-    //                 // This option requests the funds from the transaction
-    //                 // once it has been authorized successfully
-    //                 submitForSettlement: true
-    //             }
-    //         }, (error, result) => {
-    //             if (result) {
-    //                 res.send(result);
-    //             } else {
-    //                 res.status(500).send(error);
-    //             }
-    //         });
-    //     })
-    // },
 
     async checkout(req: Request, res: Response) {
         const products = await getOrderItems(req.body.payload.cartItems);
@@ -69,6 +30,13 @@ const paymentController = {
                 }
             }),
             mode: 'payment',
+            shipping_address_collection: {
+                allowed_countries: ['FR'],
+            },
+            shipping_options:[{
+                //stripe shipping_rates create --display-name="Livraison standard" --type="fixed_amount" -d "fixed_amount[amount]=1000" -d "fixed_amount[currency]=eur" -d "delivery_estimate[maximum][unit]=business_day" -d "delivery_estimate[maximum][value]=10" -d "delivery_estimate[minimum][unit]=business_day" -d "delivery_estimate[minimum][value]=5" 
+                shipping_rate: "shr_1OeGaBI95XdS21zVuhJ5PG25"
+            }],
             payment_method_types: ['card', 'paypal'],
             return_url: `${process.env.CLIENT_HOST}/confirmation-paiement?session_id={CHECKOUT_SESSION_ID}`,
         });
@@ -79,9 +47,17 @@ const paymentController = {
     async getSessionStatus(req: Request, res: Response){
         const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
 
+        let customerId = null;
+        if(session.status === "complete"){
+            await customerController.saveCustomerInfo(session.customer_details).then(customer => {
+                customerId = customer.id;
+            })
+        }
+
         res.send({
-          status: session.status,
-          customer_email: session.customer_details.email
+            status: session.status,
+            customerId: customerId,
+            data: session
         });
     },
 

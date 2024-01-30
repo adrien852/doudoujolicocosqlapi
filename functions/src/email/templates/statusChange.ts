@@ -29,7 +29,7 @@ function getStatusChangeBody(data){
         body: {
             greeting: 'Bonjour',
             signature: 'A bientôt',
-            name: data.customer.shippingAddress.firstName,
+            name: data.customer.shippingAddress.name,
             intro: 'Votre commande a été mise à jour. Elle est désormais '+`<b>${statusFr[data.newStatus]}</b>.`,
             table: {
                 data: products,

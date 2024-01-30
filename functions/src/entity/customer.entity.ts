@@ -21,12 +21,6 @@ export class Customer {
     @JoinColumn()
     shippingAddress: Address
 
-    @OneToOne(() => Address, {
-        cascade: true,
-    })
-    @JoinColumn()
-    billingAddress: Address
-
     @OneToMany(() => Payment, (payment) => payment.customer)
     payments: Payment[]
 

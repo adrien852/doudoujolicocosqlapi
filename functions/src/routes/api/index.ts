@@ -17,12 +17,10 @@ router.get("/products/:normalized", productController.byNormalized)
 router.get("/categories", categoryController.all)
 router.get("/categories/:normalized", categoryController.byNormalized)
 
-router.post("/customers", customerController.save)
 router.post("/signIn", customerController.signIn)
 router.post("/login", customerController.login)
 
 router.post('/payment/save', paymentController.savePaymentId);
-// router.get('/payment/initialize', paymentController.initialize);
 router.post('/payment/checkout', paymentController.checkout);
 router.get('/payment/session', paymentController.getSessionStatus);
 
