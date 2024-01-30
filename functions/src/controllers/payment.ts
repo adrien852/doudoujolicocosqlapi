@@ -33,10 +33,10 @@ const paymentController = {
             shipping_address_collection: {
                 allowed_countries: ['FR'],
             },
-            shipping_options:[{
-                //stripe shipping_rates create --display-name="Livraison standard" --type="fixed_amount" -d "fixed_amount[amount]=1000" -d "fixed_amount[currency]=eur" -d "delivery_estimate[maximum][unit]=business_day" -d "delivery_estimate[maximum][value]=10" -d "delivery_estimate[minimum][unit]=business_day" -d "delivery_estimate[minimum][value]=5" 
-                shipping_rate: "shr_1OeGaBI95XdS21zVuhJ5PG25"
-            }],
+            // shipping_options:[{
+            //     //stripe shipping_rates create --display-name="Livraison standard" --type="fixed_amount" -d "fixed_amount[amount]=1000" -d "fixed_amount[currency]=eur" -d "delivery_estimate[maximum][unit]=business_day" -d "delivery_estimate[maximum][value]=10" -d "delivery_estimate[minimum][unit]=business_day" -d "delivery_estimate[minimum][value]=5" 
+            //     shipping_rate: "shr_1OeGaBI95XdS21zVuhJ5PG25"
+            // }],
             payment_method_types: ['card', 'paypal'],
             return_url: `${process.env.CLIENT_HOST}/confirmation-paiement?session_id={CHECKOUT_SESSION_ID}`,
         });
