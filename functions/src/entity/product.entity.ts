@@ -25,6 +25,15 @@ export class Product {
     @Column({nullable: false})
     description: string
 
+    @Column({nullable: true})
+    material: string
+
+    @Column({nullable: true})
+    dimensions: string
+
+    @Column({nullable: false})
+    isNotForChildren: boolean
+
     @ManyToOne(() => Category, (category) => category.products, {
         eager: true,
         nullable: false
