@@ -22,13 +22,13 @@ export class Product {
     @Column('decimal', { precision: 6, scale: 2 , nullable: false})
     originalPrice: number
 
-    @Column({nullable: false})
+    @Column("text", {nullable: false})
     description: string
 
-    @Column({nullable: true})
+    @Column("text", {nullable: true})
     material: string
 
-    @Column({nullable: true})
+    @Column("text", {nullable: true})
     dimensions: string
 
     @Column({nullable: false})

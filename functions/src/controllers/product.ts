@@ -63,7 +63,8 @@ const productController = {
 
     async update(req: Request, res: Response){
         let myDataSource = await serviceDS;
-        const productPayload = req.body.payload;
+        let productPayload = req.body.payload;
+        productPayload.normalized = productPayload.normalized.trim();
         const reqId = req.params.id;
         myDataSource.getRepository(Product).update(reqId, {
             ...productPayload
@@ -76,7 +77,8 @@ const productController = {
 
     async save(req: Request, res: Response){
         let myDataSource = await serviceDS;
-        const productPayload = req.body.payload;
+        let productPayload = req.body.payload;
+        productPayload.normalized = productPayload.normalized.trim();
         myDataSource.getRepository(Product).save({
             ...productPayload
         }).then((results) => {
