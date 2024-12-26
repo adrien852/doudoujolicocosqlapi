@@ -4,7 +4,7 @@ const app = express()
 app.use(express.json())
 let cors = require("cors");
 require('dotenv').config()
-const functions = require("firebase-functions");
+const {onRequest} = require("firebase-functions/v2/https");
 const clientHost = process.env.CLIENT_HOST;
 const cookieParser = require("cookie-parser");
 
@@ -23,4 +23,4 @@ app.use('/api', api);
 
 app.use(express.static(__dirname + '/assets'));
 
-exports.api = functions.https.onRequest(app);
+exports.apiv2 = onRequest(app);
