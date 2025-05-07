@@ -50,16 +50,25 @@ const customerController = {
       const isPasswordCorrect = await Encrypt.comparePassword(req.body.payload.password, customer.password);
       if(isPasswordCorrect){
         const token = authenticationMiddleware.generateAccessToken(req.body.payload.email, req.body.payload.password)
-        const cookieOptions = process.env.NODE_ENV === 'production' ? {
+        let cookieOptions: {
+          httpOnly: boolean;
+          secure: boolean;
+          sameSite: boolean | "none" | "lax" | "strict";
+          maxAge: number;
+          path: string;
+          domain?: string;
+        } = {
           httpOnly: true,
-          secure: true, 
-          domain:"."+process.env.DOMAIN, 
-          sameSite: true,
-          maxAge: 1000 * 60 * 60 * 10
-        } : {
-          secure: false,
-          sameSite: false
+          secure: true,
+          sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none',
+          maxAge: 1000 * 60 * 60 * 10,
+          path: '/',
         };
+        
+        // Set domain only if you really need cross-subdomain cookies (and it's correct)
+        if (process.env.DOMAIN && process.env.NODE_ENV === 'production') {
+          cookieOptions.domain = '.' + process.env.DOMAIN;
+        }
         res.cookie("__session", token, cookieOptions)
         if(req.body.payload.email.toLowerCase() === process.env.ADMIN_LOGIN){
           res.status(200).send({

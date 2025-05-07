@@ -14,14 +14,26 @@
       ]
     }
   ],
-  "hosting": {
-    "public": "public",
-    "site": "doudoujoli-api",
-    "rewrites": [
-      {
-        "source": "/api/**",
-        "function": "apiv2"
-      }
-    ]
-  }
+  "hosting": [
+    {
+      "site": "doudoujoli-api",
+      "public": "public",
+      "rewrites": [
+        {
+          "source": "/api/**",
+          "function": "apiv2"
+        }
+      ]
+    },
+    {
+      "site": "doudoujoli-staging-api",
+      "public": "public",
+      "rewrites": [
+        {
+          "source": "/api/**",
+          "function": "apiv2Staging"
+        }
+      ]
+    }
+  ]
 }

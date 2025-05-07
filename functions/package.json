@@ -1,13 +1,14 @@
 {
   "name": "functions",
   "scripts": {
-    "serve": "tsc && firebase emulators:start",
+    "serve": "tsc && firebase emulators:start --only functions -P dev",
     "build": "npm run remove-lib && tsc && npm run create-assets-folder && npm run copy-assets",
     "build:watch": "tsc --watch",
     "super-serve": "npm run build && tsc && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
-    "deploy": "firebase deploy -P prod",
+    "deploy:prod": "firebase use prod && firebase deploy --only hosting:doudoujoli-api,functions:apiv2 -P prod",
+    "deploy:staging": "firebase use staging && firebase deploy --only hosting:doudoujoli-staging-api,functions:apiv2Staging -P staging",
     "logs": "firebase functions:log",
     "remove-lib": "rd /s /q dist",
     "create-assets-folder": "md dist\\assets",

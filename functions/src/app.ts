@@ -24,3 +24,4 @@ app.use('/api', api);
 app.use(express.static(__dirname + '/assets'));
 
 exports.apiv2 = onRequest(app);
+exports.apiv2Staging = onRequest(app);
