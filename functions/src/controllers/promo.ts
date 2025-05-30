@@ -21,6 +21,16 @@ const promoController = {
         res.send(promo)
     },
 
+    async byCode(req: Request, res: Response) {
+        let myDataSource = await serviceDS;
+                const promo = await myDataSource.getRepository(Promo).findOne({
+            where: {
+                code: req.params.code,
+            }
+        })
+        res.send(promo)
+    },
+
     async update(req: Request, res: Response) {
         let myDataSource = await serviceDS;
         let promoPayload = req.body.payload;

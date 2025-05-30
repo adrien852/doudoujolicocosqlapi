@@ -4,6 +4,7 @@ import { serviceDS } from "../myDataSource"
 import { Customer } from "../entity/customer.entity"
 import { Product } from "../entity/product.entity"
 import { Payment } from "../entity/payment.entity";
+import { Promo } from "../entity/promo.entity";
 import { Request, Response } from "express"
 import { Order } from "../entity/order.entity";
 const sendConfirmationEmail = require('../email/templates/paymentConfirmation');
@@ -13,22 +14,41 @@ const customerController = require('./customer');
 const paymentController = {
 
     async checkout(req: Request, res: Response) {
-        const products = await getOrderItems(req.body.payload.cartItems);
+        let products = await getOrderItems(req.body.payload.cartItems);
+        const promo = await getPromo(req.body.payload.promoCode);
+        console.log("Promo", promo);
+
+        // Calcul du total des produits
+        const totalProducts = products.reduce((sum, product) => sum + Number(product.price), 0);
+
+        let discount = 0;
+        if (promo && promo.amount > 0) {
+            if (promo.type === "Pourcentage") {
+                discount = Math.round(totalProducts * (Number(promo.amount) / 100) * 100) / 100;
+            } else {
+                discount = Number(promo.amount);
+            }
+        }
+
+        // On applique la réduction
+        let totalFinal = totalProducts - discount;
+        if (totalFinal < 0) totalFinal = 0;
+
         const session = await stripe.checkout.sessions.create({
             locale: 'fr',
             ui_mode: 'embedded',
-            line_items: products.map(product => {
-                return {
+            line_items: [
+                {
                     price_data: {
                         currency: 'eur',
                         product_data: {
-                            name: product.name
+                            name: "Commande DoudouJoli"
                         },
-                        unit_amount: product.price*100
+                        unit_amount: Math.round(totalFinal * 100)
                     },
                     quantity: 1
                 }
-            }),
+            ],
             mode: 'payment',
             shipping_address_collection: {
                 allowed_countries: ['FR'],
@@ -41,7 +61,7 @@ const paymentController = {
             return_url: `${process.env.CLIENT_HOST}/confirmation-paiement?session_id={CHECKOUT_SESSION_ID}`,
         });
         
-        res.send({clientSecret: session.client_secret});
+        res.send({ clientSecret: session.client_secret });
     },
 
     async getSessionStatus(req: Request, res: Response){
@@ -142,6 +162,16 @@ async function getOrderItems(items){
         })
         dbItems.push(dbItem);
     })).then(() => dbItems)
+}
+
+async function getPromo(promoCode){
+    let myDataSource = await serviceDS;
+    const promo = await myDataSource.getRepository(Promo).findOne({
+        where: {
+            code: String(promoCode),
+        }
+    })
+    return promo;
 }
 
 function randomRef() {

@@ -49,6 +49,7 @@ router.post("/order/sendEmail/:reference", authenticationMiddleware.authenticate
 
 router.get("/promos",  promoController.all)
 router.get("/promo/:id",  promoController.byId)
+router.get("/promo/code/:code",  promoController.byCode)
 router.put("/promo/:id",  promoController.update)
 router.post("/promos",  promoController.save)
 router.delete("/promo/:id",  promoController.delete)
