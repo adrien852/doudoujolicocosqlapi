@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, CreateDat
 import { Customer } from "./customer.entity"
 import { Product } from "./product.entity"
 import { Payment } from "./payment.entity"
+import { Promo } from "./promo.entity"
 
 export enum OrderStatus {
     PENDING = "En attente",
@@ -29,6 +30,12 @@ export class Order {
         nullable: false
     })
     customer: Customer
+
+    @ManyToOne(() => Promo, (promo) => promo.orders, {
+        eager: true,
+        nullable: true
+    })
+    promo: Promo
 
     @ManyToMany(() => Product, {
         eager: true,

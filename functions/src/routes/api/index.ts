@@ -6,6 +6,7 @@ const paymentController = require('../../controllers/payment');
 const customerController = require('../../controllers/customer');
 const orderController = require('../../controllers/order');
 const emailController = require('../../controllers/contact')
+const promoController = require('../../controllers/promo');
 const authenticationMiddleware = require('../../middleware/authentication')
 
 const router = express.Router();
@@ -45,5 +46,11 @@ router.get("/orders", authenticationMiddleware.authenticateAdminToken, orderCont
 router.get("/order/:reference", authenticationMiddleware.authenticateAdminToken, orderController.byReference)
 router.put("/order/:reference", authenticationMiddleware.authenticateAdminToken, orderController.update)
 router.post("/order/sendEmail/:reference", authenticationMiddleware.authenticateAdminToken, orderController.sendEmail)
+
+router.get("/promos",  promoController.all)
+router.get("/promo/:id",  promoController.byId)
+router.put("/promo/:id",  promoController.update)
+router.post("/promos",  promoController.save)
+router.delete("/promo/:id",  promoController.delete)
 
 module.exports = router;
