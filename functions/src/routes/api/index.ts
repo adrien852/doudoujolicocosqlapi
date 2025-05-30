@@ -47,11 +47,11 @@ router.get("/order/:reference", authenticationMiddleware.authenticateAdminToken,
 router.put("/order/:reference", authenticationMiddleware.authenticateAdminToken, orderController.update)
 router.post("/order/sendEmail/:reference", authenticationMiddleware.authenticateAdminToken, orderController.sendEmail)
 
-router.get("/promos",  promoController.all)
-router.get("/promo/:id",  promoController.byId)
-router.get("/promo/code/:code",  promoController.byCode)
-router.put("/promo/:id",  promoController.update)
-router.post("/promos",  promoController.save)
-router.delete("/promo/:id",  promoController.delete)
+router.get("/promos", authenticationMiddleware.authenticateAdminToken, promoController.all)
+router.get("/promo/:id", authenticationMiddleware.authenticateAdminToken, promoController.byId)
+router.get("/promo/code/:code", promoController.byCode)
+router.put("/promo/:id", authenticationMiddleware.authenticateAdminToken, promoController.update)
+router.post("/promos", authenticationMiddleware.authenticateAdminToken, promoController.save)
+router.delete("/promo/:id", authenticationMiddleware.authenticateAdminToken, promoController.delete)
 
 module.exports = router;
