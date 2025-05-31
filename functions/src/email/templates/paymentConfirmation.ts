@@ -64,7 +64,7 @@ module.exports = async function sendConfirmationEmail(data){
         product: {
             name: 'Doudou Joli',
             link: process.env.CLIENT_HOST,
-            logo: 'https://firebasestorage.googleapis.com/v0/b/doudoujoli-610f9.appspot.com/o/full_logo.png?alt=media&token=976ecd8d-f055-4176-a764-3e20352453e8'
+            logo: 'https://firebasestorage.googleapis.com/v0/b/doudoujoli-610f9.appspot.com/o/full_logo.png?alt=media&token=4e92179e-30ad-4b67-804b-4b2894c41b31'
         }
     });
 

@@ -31,6 +31,7 @@ if (locals.action) {
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&display=swap" rel="stylesheet">
   <style type="text/css" rel="stylesheet" media="all">
     /* Base ------------------------------ */
     *:not(br):not(tr):not(html) {
@@ -43,7 +44,7 @@ if (locals.action) {
       height: 100%;
       margin: 0;
       line-height: 1.4;
-      background-color: #94bcd842;
+      background-color: #F39E6A21;
       color: #74787E;
       -webkit-text-size-adjust: none;
     }
@@ -74,11 +75,13 @@ if (locals.action) {
       border: 0;
     }
     .email-masthead_name {
-      font-size: 16px;
+      font-size: 21px;
       font-weight: bold;
       color: #2F3133;
       text-decoration: none;
       text-shadow: 0 1px 0 white;
+      font-family: "Dancing Script", cursive;
+      line-height: 1;
     }
     .email-logo {
       max-height: 50px;
@@ -248,14 +251,13 @@ if (locals.action) {
               <a class="email-masthead_name" href="<%- product.link %>" target="_blank">
                 <% if (locals.product.logo) { %>
                   <% if (product.logoHeight) { %>
-                    <img src="<%- product.logo %>" style="height: <%- product.logoHeight %>;" alt="<%- product.name %>" />
+                    <img src="<%- product.logo %>" style="height: <%- product.logoHeight %>;" alt="<%- product.name %>" /></br>
                   <% } else { %>
-                    <img src="<%- product.logo %>" class="email-logo" alt="<%- product.name %>" />
+                    <img src="<%- product.logo %>" class="email-logo" alt="<%- product.name %>" /></br>
                     <% } %>
-                <% } else { %>
-                  <%- product.name %>
                 <% } %>
-                </a>
+                <%- product.name %>
+              </a>
             </td>
           </tr>
           <!-- Email Body -->

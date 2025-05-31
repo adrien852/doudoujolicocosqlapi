@@ -43,6 +43,9 @@ const orderController = {
                 reference: orderRef
             }
         })
+        myDataSource.getRepository(Order).update(order.id, {
+            trackingNumber: req.body.payload.trackingNumber
+        })
         const data = {...order, ...req.body.payload}
         await sendStatusChanged(data);
         return res.status(201).json(
