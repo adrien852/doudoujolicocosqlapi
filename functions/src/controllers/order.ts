@@ -7,7 +7,9 @@ const orderController = {
     async all(req: Request, res: Response) {
         let myDataSource = await serviceDS;
         const orders = await myDataSource.getRepository(Order).find({
-            
+            order: {
+                createdAt: "DESC"
+            }
         })
         res.send(orders)
     },

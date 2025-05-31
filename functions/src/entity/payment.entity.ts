@@ -13,7 +13,7 @@ export class Payment {
     @Column('decimal', { precision: 6, scale: 2 , nullable: false})
     amount: number
 
-    @CreateDateColumn()
+    @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     createdAt: Date;
 
     @ManyToOne(() => Customer, (customer) => customer.payments, {
