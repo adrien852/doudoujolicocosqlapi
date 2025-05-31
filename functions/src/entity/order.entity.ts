@@ -50,6 +50,9 @@ export class Order {
     })
     status: OrderStatus
 
+    @Column({nullable: true})
+    trackingNumber: string
+
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
     createdAt: Date;
 

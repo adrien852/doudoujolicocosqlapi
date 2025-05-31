@@ -25,13 +25,13 @@ function getStatusChangeBody(data){
             prix: product.price+'€'
         }
     })
-    return {
+    let emailContent = {
         body: {
             greeting: 'Bonjour',
             signature: 'A bientôt',
             name: data.customer.shippingAddress.name,
             intro: 'Votre commande a été mise à jour. Elle est désormais '+`<b>${statusFr[data.newStatus]}</b>.`,
-            table: {
+            table: [{
                 data: products,
                 title: 'Commande #'+data.reference,
                 columns: {
@@ -45,7 +45,7 @@ function getStatusChangeBody(data){
                         price: 'right'
                     }
                 }
-            },
+            }],
             // action: {
             //     instructions: 'Vous pouvez me contacter par email pour connaitre l\'avancée de la préparation et expédition de votre commande à l\'adresse suivante : contact@doudoujoli.fr',
             //     button: {
@@ -61,6 +61,26 @@ function getStatusChangeBody(data){
 
         }
     };
+
+    if (data.trackingNumber && data.trackingNumber.trim() !== '') {
+        emailContent.body.table.push({
+            data: [],
+            title: '<span style="font-weight:normal">Numéro de suivi Colissimo :</span> ' + data.trackingNumber,
+            columns: {
+                // Optionally, customize the column widths
+                customWidth: {
+                    item: '20%',
+                    price: '15%'
+                },
+                // Optionally, change column text alignment
+                customAlignment: {
+                    price: 'right'
+                }
+            }
+        });
+    }
+    
+    return emailContent;
 }
 
 module.exports = async function sendStatusChanged(data){
@@ -71,7 +91,7 @@ module.exports = async function sendStatusChanged(data){
         product: {
             name: 'Doudou Joli',
             link: process.env.CLIENT_HOST,
-            logo: 'https://firebasestorage.googleapis.com/v0/b/doudoujoli-610f9.appspot.com/o/full_logo.png?alt=media&token=976ecd8d-f055-4176-a764-3e20352453e8'
+            logo: 'https://firebasestorage.googleapis.com/v0/b/doudoujoli-610f9.appspot.com/o/full_logo.png?alt=media&token=4e92179e-30ad-4b67-804b-4b2894c41b31'
         }
     });
 
