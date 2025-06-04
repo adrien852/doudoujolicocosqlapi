@@ -54,4 +54,8 @@ router.put("/promo/:id", authenticationMiddleware.authenticateAdminToken, promoC
 router.post("/promos", authenticationMiddleware.authenticateAdminToken, promoController.save)
 router.delete("/promo/:id", authenticationMiddleware.authenticateAdminToken, promoController.delete)
 
+router.get("/ping", (req, res) => {
+    res.status(200).json({ message: "pong" });
+});
+
 module.exports = router;
