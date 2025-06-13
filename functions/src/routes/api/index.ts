@@ -8,6 +8,7 @@ const orderController = require('../../controllers/order');
 const emailController = require('../../controllers/contact')
 const promoController = require('../../controllers/promo');
 const authenticationMiddleware = require('../../middleware/authentication')
+const homeController = require('../../controllers/home');
 
 const router = express.Router();
 
@@ -53,6 +54,9 @@ router.get("/promo/code/:code", promoController.byCode)
 router.put("/promo/:id", authenticationMiddleware.authenticateAdminToken, promoController.update)
 router.post("/promos", authenticationMiddleware.authenticateAdminToken, promoController.save)
 router.delete("/promo/:id", authenticationMiddleware.authenticateAdminToken, promoController.delete)
+
+router.get("/home", authenticationMiddleware.authenticateAdminToken, homeController.getElements);
+router.put("/home/:id", authenticationMiddleware.authenticateAdminToken, homeController.update);
 
 router.get("/ping", (req, res) => {
     res.status(200).json({ message: "pong" });

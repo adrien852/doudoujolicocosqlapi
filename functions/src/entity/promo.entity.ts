@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Index } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Index, OneToOne } from "typeorm"
 import { Order } from "./order.entity"
+import { Home } from "./home.entity"
 
 export enum PromoType {
     FIXED = "Valeur fixe",
