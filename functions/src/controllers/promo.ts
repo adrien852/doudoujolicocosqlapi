@@ -35,6 +35,9 @@ const promoController = {
         let myDataSource = await serviceDS;
         let promoPayload = req.body.payload;
         const reqId = req.params.id;
+        if(promoPayload && promoPayload.code) {
+            promoPayload.code = promoPayload.code.toUpperCase();
+        }
         myDataSource.getRepository(Promo).update(reqId, {
             ...promoPayload
         }).then((results) => {
@@ -47,6 +50,9 @@ const promoController = {
     async save(req: Request, res: Response) {
         let myDataSource = await serviceDS;
         let promoPayload = req.body.payload;
+        if(promoPayload && promoPayload.code) {
+            promoPayload.code = promoPayload.code.toUpperCase();
+        }
         myDataSource.getRepository(Promo).save({
             ...promoPayload
         }).then((results) => {

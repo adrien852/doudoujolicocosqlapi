@@ -55,7 +55,7 @@ router.put("/promo/:id", authenticationMiddleware.authenticateAdminToken, promoC
 router.post("/promos", authenticationMiddleware.authenticateAdminToken, promoController.save)
 router.delete("/promo/:id", authenticationMiddleware.authenticateAdminToken, promoController.delete)
 
-router.get("/home", authenticationMiddleware.authenticateAdminToken, homeController.getElements);
+router.get("/home", homeController.getElements);
 router.put("/home/:id", authenticationMiddleware.authenticateAdminToken, homeController.update);
 
 router.get("/ping", (req, res) => {

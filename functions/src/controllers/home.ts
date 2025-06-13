@@ -18,6 +18,7 @@ const homeController = {
             res.send({
                 ...home,
                 promo: {
+                    ...home.promo,
                     id: home.promo ? home.promo.id : null
                 }
             });
