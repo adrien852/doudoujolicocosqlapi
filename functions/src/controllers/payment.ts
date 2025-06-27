@@ -16,7 +16,6 @@ const paymentController = {
     async checkout(req: Request, res: Response) {
         let products = await getOrderItems(req.body.payload.cartItems);
         const promo = await getPromo(req.body.payload.promoCode);
-        console.log("Promo", promo);
 
         // Calcul du total des produits
         const totalProducts = products.reduce((sum, product) => sum + Number(product.price), 0);
@@ -83,7 +82,15 @@ const paymentController = {
 
     async savePaymentId(req: Request, res: Response){
         let myDataSource = await serviceDS;
-        
+
+        // Vérifie si un paiement avec le même paymentId existe déjà
+        const existingPayment = await myDataSource.getRepository(Payment).findOne({
+            where: { paymentId: req.body.payload.paymentId }
+        });
+        if (existingPayment) {
+            return res.status(400).json({ error: "Ce paiement existe déjà." });
+        }
+
         const customer = Object.assign( myDataSource.getRepository(Customer).create({id: req.body.payload.customerId}));
         const payment = Object.assign( myDataSource.getRepository(Payment).create({
             customer: customer,
@@ -94,6 +101,11 @@ const paymentController = {
             const savedPayment = await myDataSource.getRepository(Payment).findOne({
                 where: {
                     id: results.id,
+                }
+            })
+            const promo = await myDataSource.getRepository(Promo).findOne({
+                where: {
+                    code: req.body.payload.promo,
                 }
             })
             const products = await getOrderItems(req.body.payload.items);
@@ -114,14 +126,17 @@ const paymentController = {
                 reference: uniqueReference,
                 payment: savedPayment,
                 products: products,
-                customer: savedPayment.customer
+                customer: savedPayment.customer,
+                promo: promo ? promo : null,
             }));
             //Save order
             myDataSource.getRepository(Order).save(order).then((results) => {
-                //Send email to customer
-                sendConfirmationEmail(results);
-                //Send email to doudoujoli
-                sendOrderNotifEmail(results);
+                if(process.env.NODE_ENV === 'production') {
+                    //Send email to customer
+                    sendConfirmationEmail(results);
+                    //Send email to doudoujoli
+                    sendOrderNotifEmail(results);
+                }
                 return res.status(201).json(
                     {
                         message: "Payment and order saved",
