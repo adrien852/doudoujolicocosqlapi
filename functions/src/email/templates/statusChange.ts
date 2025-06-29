@@ -18,13 +18,38 @@ const statusFr = {
 }
 
 function getStatusChangeBody(data){
-    const products = data.products.map((product) => {
-        return {
-            objet: product.name,
-            description: product.category.name[0].toUpperCase() + product.category.name.slice(1),
-            prix: product.price+'€'
+    const products = [
+        ...data.items.map((item) => {
+            return {
+                objet: item.product.name + ' x' + item.quantity,
+                description: item.product.category.name[0].toUpperCase() + item.product.category.name.slice(1),
+                prix: (item.product.price * item.quantity).toFixed(2) + '€'
+            }
+        }),
+        { empty: '' },
+        ...(data.promo ? [{
+            objet: '',
+            description: "Code Promotionnel",
+            prix: '-' + (data.promo.type === 'Pourcentage' ? Math.round(data.promo.amount) + '%' : data.promo.amount.toFixed(2) + '€')
+        }, { empty: '' }] : []),
+        {
+            objet: '',
+            description: 'Total',
+            prix: (() => {
+                const total = data.items.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+                let finalTotal = total;
+                if (data.promo) {
+                    if (data.promo.type === 'Pourcentage') {
+                        finalTotal = total - (total * data.promo.amount / 100);
+                    } else {
+                        finalTotal = total - data.promo.amount;
+                    }
+                }
+                return finalTotal.toFixed(2) + '€';
+            })()
         }
-    })
+    ]
+
     let emailContent = {
         body: {
             greeting: 'Bonjour',

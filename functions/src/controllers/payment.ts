@@ -14,11 +14,24 @@ const customerController = require('./customer');
 const paymentController = {
 
     async checkout(req: Request, res: Response) {
-        let products = await getOrderItems(req.body.payload.cartItems);
+        let orderProducts = await getOrderProducts(req.body.payload.cartItems);
+
+        // Vérification du stock AVANT de créer la session Stripe
+        for (const orderProduct of orderProducts) {
+            if (!orderProduct.product) {
+                return res.status(400).json({ error: `Produit introuvable.` });
+            }
+            if (orderProduct.product.stock !== undefined && orderProduct.qty > orderProduct.product.stock) {
+                return res.status(400).json({
+                    error: `Stock insuffisant pour le produit "${orderProduct.product.name}"`
+                });
+            }
+        }
+
         const promo = await getPromo(req.body.payload.promoCode);
 
         // Calcul du total des produits
-        const totalProducts = products.reduce((sum, product) => sum + Number(product.price), 0);
+        const totalProducts = orderProducts.reduce((sum, orderProduct) => sum + Number(orderProduct.product.price) * orderProduct.qty, 0);
 
         let discount = 0;
         if (promo && promo.amount > 0) {
@@ -108,7 +121,11 @@ const paymentController = {
                     code: req.body.payload.promo,
                 }
             })
-            const products = await getOrderItems(req.body.payload.items);
+            const orderProducts = await getOrderProducts(req.body.payload.items);
+            const orderItems = orderProducts.map(orderProduct => ({
+                product: orderProduct.product,
+                quantity: orderProduct.qty
+            }));
             //Create random reference number until it is unique
             let uniqueReference = "";
             let existingOrder = null;
@@ -125,7 +142,7 @@ const paymentController = {
             const order = Object.assign( myDataSource.getRepository(Order).create({
                 reference: uniqueReference,
                 payment: savedPayment,
-                products: products,
+                items: orderItems,
                 customer: savedPayment.customer,
                 promo: promo ? promo : null,
             }));
@@ -152,31 +169,17 @@ const paymentController = {
       }
 }
 
-async function getTotalAmount(items){
+async function getOrderProducts(products){
     let myDataSource = await serviceDS;
-    let totalAmount = 0;
-    return await Promise.all(items.map(async (item) => {
-        const apiItem = await myDataSource.getRepository(Product).findOne({
+    let dbProducts = [];
+    return await Promise.all(products.map(async (product) => {
+        let dbProduct = await myDataSource.getRepository(Product).findOne({
             where: {
-                normalized: item.normalized,
+                normalized: product.normalized,
             }
         })
-        totalAmount += apiItem.price * item.qty;
-    })).then(() => totalAmount)
-    
-}
-
-async function getOrderItems(items){
-    let myDataSource = await serviceDS;
-    let dbItems = [];
-    return await Promise.all(items.map(async (item) => {
-        let dbItem = await myDataSource.getRepository(Product).findOne({
-            where: {
-                normalized: item.normalized,
-            }
-        })
-        dbItems.push(dbItem);
-    })).then(() => dbItems)
+        dbProducts.push({product: dbProduct, qty: product.qty});
+    })).then(() => dbProducts)
 }
 
 async function getPromo(promoCode){

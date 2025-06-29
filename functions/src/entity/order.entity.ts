@@ -3,6 +3,7 @@ import { Customer } from "./customer.entity"
 import { Product } from "./product.entity"
 import { Payment } from "./payment.entity"
 import { Promo } from "./promo.entity"
+import { OrderItem } from "./order_item.entity"
 
 export enum OrderStatus {
     PENDING = "En attente",
@@ -37,11 +38,11 @@ export class Order {
     })
     promo: Promo
 
-    @ManyToMany(() => Product, {
-        eager: true,
+    @OneToMany(() => OrderItem, item => item.order, { 
+        cascade: true, 
+        eager: true 
     })
-    @JoinTable()
-    products: Product[]
+    items: OrderItem[];
 
     @Column({
         type: "enum",
