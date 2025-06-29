@@ -147,19 +147,25 @@ const paymentController = {
                 promo: promo ? promo : null,
             }));
             //Save order
-            myDataSource.getRepository(Order).save(order).then((results) => {
+            myDataSource.getRepository(Order).save(order).then(async (results) => {
+                // Décrémente le stock de chaque produit acheté
+                for (const orderProduct of orderProducts) {
+                    if (orderProduct.product && typeof orderProduct.product.stock === "number") {
+                        orderProduct.product.stock = orderProduct.product.stock - orderProduct.qty;
+                        await myDataSource.getRepository(Product).save(orderProduct.product);
+                    }
+                }
+
                 if(process.env.NODE_ENV === 'production') {
                     //Send email to customer
                     sendConfirmationEmail(results);
                     //Send email to doudoujoli
                     sendOrderNotifEmail(results);
                 }
-                return res.status(201).json(
-                    {
-                        message: "Payment and order saved",
-                        order: results
-                    }
-                )
+                return res.status(201).json({
+                    message: "Payment and order saved",
+                    order: results
+                });
             })
         }).catch((err) => {
             return res.status(500).json("Payment not saved");
